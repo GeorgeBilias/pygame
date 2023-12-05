@@ -1,7 +1,7 @@
 # importing libraries
 import pygame,sys
 from settings import *
-from level import level
+from level import Level
 
 
 # main class
@@ -11,7 +11,7 @@ class Game:
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))  # Set up the game window
         pygame.display.set_caption("Game")
         self.clock = pygame.time.Clock()  # Create a clock object to control the frame rate
-        self.level = level() # initialise the level object
+        self.level = Level() # initialise the level object
 
 
     def run(self):
