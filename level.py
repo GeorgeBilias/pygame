@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 
+
 class Level:
     def __init__(self):
         # Get the display surface
