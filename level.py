@@ -20,7 +20,7 @@ class Level:
     def run(self, dt):
         # This method is called to run the level
 
-        print("Level running")
+        #print("Level running")
 
         # Fill the display surface with a black color (background)
         self.display_surface.fill('black')
