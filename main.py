@@ -1,13 +1,18 @@
 # importing libraries
 import pygame,sys
 from settings import *
+from level import level
+
 
 # main class
 class Game:
     def __init__(self):
         pygame.init()  # Initialize the Pygame library
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))  # Set up the game window
+        pygame.display.set_caption("Game")
         self.clock = pygame.time.Clock()  # Create a clock object to control the frame rate
+        self.level = level() # initialise the level object
+
 
     def run(self):
         while True:
@@ -17,6 +22,7 @@ class Game:
                     sys.exit()  # Exit the program if the window is closed
 
             dt = self.clock.tick(60) / 1000  # Calculate the time since the last frame (in seconds)
+            self.level.run(dt) # run the level
             # Update game logic and draw on the screen
             # (Game logic and drawing code would be added here in a complete game)
 
