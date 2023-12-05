@@ -1,5 +1,6 @@
 import pygame
 from settings import *
+from player import Player
 
 
 class Level:
@@ -9,6 +10,12 @@ class Level:
 
         # Sprite groups to manage game objects
         self.all_sprites = pygame.sprite.Group()
+
+        self.setup()
+
+
+    def setup(self):
+        self.player = Player((640,360),self.all_sprites) # initialising player
 
     def run(self, dt):
         # This method is called to run the level
@@ -22,4 +29,4 @@ class Level:
         self.all_sprites.draw(self.display_surface)
 
         # Update all sprites in the game, applying any changes
-        self.all_sprites.update()  # This updates the sprites in our game
+        self.all_sprites.update(dt)  # This updates the sprites in our game

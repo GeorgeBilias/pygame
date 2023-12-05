@@ -22,7 +22,7 @@ class Game:
                     pygame.quit()  # Quit Pygame
                     sys.exit()  # Exit the program if the window is closed
 
-            dt = self.clock.tick(60) / 1000  # Calculate the time since the last frame (in seconds)
+            dt = self.clock.tick(60) / 1000  # set frames
             self.level.run(dt)  # run the level
             # Update game logic and draw on the screen
             # (Game logic and drawing code would be added here in a complete game)
