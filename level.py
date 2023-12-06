@@ -6,6 +6,7 @@ from player import Player
 class Level:
     def __init__(self):
         # Get the display surface
+        self.player = None
         self.display_surface = pygame.display.get_surface()
 
         # Sprite groups to manage game objects
@@ -13,14 +14,13 @@ class Level:
 
         self.setup()
 
-
     def setup(self):
-        self.player = Player((640,360),self.all_sprites) # initialising player
+        self.player = Player((640, 360), self.all_sprites)  # initialising player
 
     def run(self, dt):
         # This method is called to run the level
 
-        #print("Level running")
+        # print("Level running")
 
         # Fill the display surface with a black color (background)
         self.display_surface.fill('black')
