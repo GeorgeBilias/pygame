@@ -1,9 +1,6 @@
-papa needs to stfu
+https://www.youtube.com/watch?v=T4IX36sP_0c&t=121s [1:32:20]
 
-of cource
-
-
-
-
-53.35
-https://www.youtube.com/watch?v=T4IX36sP_0c&t=121s
+#TODO make tools and seeds dynamic
+#TODO scrollable items despite with the use of key
+#TODO add our own animations
+#TODO change overlay to look like minecraft

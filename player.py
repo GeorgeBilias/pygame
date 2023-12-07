@@ -1,5 +1,5 @@
 import pygame
-from settings import *
+# from settings import *
 from support import *
 from timer import Timer
 
@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group):
         super().__init__(group)
 
-        self.animations = None
+        self.animations = {}  # create a directory for animations
         self.import_assets()  # run the function to import the assets
         self.status = 'down_idle'
         self.frame_index = 0
@@ -155,7 +155,7 @@ class Player(pygame.sprite.Sprite):
 
     def move(self, dt):
         # normalizing a vector
-        if (self.direction.magnitude() > 0):
+        if self.direction.magnitude() > 0:
             self.direction = self.direction.normalize()  # make the vector have a length of 1 (dividing vector by its
             # own Length)
 
