@@ -1,5 +1,5 @@
 import pygame
-# from settings import *
+from settings import *
 from support import *
 from timer import Timer
 
@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.image = self.animations[self.status][self.frame_index]  # initialising  player animation
 
         self.rect = self.image.get_rect(center=pos)  # using parameters to center the player
-
+        self.z = LAYERS['main']
         # movement attributes
 
         self.direction = pygame.math.Vector2(0, 0)  # default for now (empty)
