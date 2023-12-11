@@ -18,6 +18,7 @@ class Level:
         # Sprite groups to manage game objects
         self.all_sprites = CameraGroup()  # This is a group for all sprites in the game
         self.collision_sprites = pygame.sprite.Group()
+        self.tree_sprites = pygame.sprite.Group()
 
 
         self.setup()
@@ -53,7 +54,7 @@ class Level:
         # trees
 
         for obj in tmx_data.get_layer_by_name('Trees'):
-            Tree((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites], obj.name)
+            Tree((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites,self.tree_sprites], obj.name)
 
         # collision tiles
         for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles(): # USING SET COLLISIONS FOR MAP MADE IN TILED
@@ -63,7 +64,7 @@ class Level:
         # Player
         for obj in tmx_data.get_layer_by_name('Player'):
             if obj.name == 'Start' :
-                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)  # initialising player
+                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites, self.tree_sprites)  # initialising player
 
 
 

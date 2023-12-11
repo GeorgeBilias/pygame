@@ -5,7 +5,7 @@ from timer import Timer
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group,collision_sprites):
+    def __init__(self, pos, group,collision_sprites,tree_sprites):
         super().__init__(group)
 
         self.fatigue = 0
@@ -50,9 +50,25 @@ class Player(pygame.sprite.Sprite):
         self.seed_index = 0  # set default seed
         self.selected_seed = self.seeds[self.seed_index]  # set selected seed
 
+        # interaction
+        self.tree_sprites = tree_sprites
+
     def use_tool(self):  # function for using tool
-        # print(self.selected_tool) # just a print for now
-        pass
+        print("tool use")
+        if self.selected_tool == 'hoe':
+            pass
+
+        if self.selected_tool == 'axe':
+            for tree in self.tree_sprites.sprites():
+                if tree.rect.collidepoint(self.target_pos): # if the axe is colliding with tree
+                    tree.damage()
+
+        if self.selected_tool == 'water':
+            pass
+
+    def get_target_(self):
+        self.target_pos = self.rect.center + PLAYER_TOOL_OFFSET[self.status.split('_')[0]]
+
 
     def use_seed(self):  # function for using tool
         # print(self.selected_tool) # just a print for now
@@ -190,9 +206,9 @@ class Player(pygame.sprite.Sprite):
             if hasattr(sprite, 'hitbox'): # check collision
                 if sprite.hitbox.colliderect(self.hitbox): # check for overlap
                     if direction == 'horizontal': # check collision when moving horizontaly
-                        if self.direction.x > 0: # moving right
+                        if self.direction.x > 0:  # moving right
                             self.hitbox.right = sprite.hitbox.left
-                        if self.direction.x < 0: # moving left
+                        if self.direction.x < 0:  # moving left
                             self.hitbox.left = sprite.hitbox.right
                         self.rect.centerx = self.hitbox.centerx  # updating rect of player (where he appears on screen , for example behind flower)
                         self.pos.x = self.hitbox.centerx
@@ -203,9 +219,9 @@ class Player(pygame.sprite.Sprite):
 
 
                     if direction == 'vertical': # check collision when moving verticaly
-                        if self.direction.y > 0 : # moving down
+                        if self.direction.y > 0 :  # moving down
                             self.hitbox.bottom = sprite.hitbox.top
-                        if self.direction.y < 0 : # moving up
+                        if self.direction.y < 0 :  # moving up
                             self.hitbox.top = sprite.hitbox.bottom
                         self.rect.centery = self.hitbox.centery
                         self.pos.y = self.hitbox.centery
@@ -220,13 +236,13 @@ class Player(pygame.sprite.Sprite):
         # updating horizontal and vertical movement separately using speed direction and delta time
         # horizontal movement
         self.pos.x += self.direction.x * self.speed * dt
-        self.hitbox.centerx = round(self.pos.x) # updating hitbox var for x
+        self.hitbox.centerx = round(self.pos.x)  # updating hitbox var for x
         self.rect.centerx = self.hitbox.centerx
-        self.collision('horizontal') # check for collision after each movement (horizontal)
+        self.collision('horizontal')  # check for collision after each movement (horizontal)
 
         # vertical movement
         self.pos.y += self.direction.y * self.speed * dt
-        self.hitbox.centery = round(self.pos.y) # updating hitbox var for y
+        self.hitbox.centery = round(self.pos.y)  # updating hitbox var for y
         self.rect.centery = self.hitbox.centery
         self.collision('vertical')  # check for collision after each movement (vertical)
 
@@ -235,5 +251,6 @@ class Player(pygame.sprite.Sprite):
         self.input()
         self.get_status()
         self.move(dt)
+        self.get_target_()
         self.animate(dt)
         self.update_timers()
