@@ -5,9 +5,11 @@ from timer import Timer
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group):
+    def __init__(self, pos, group,collision_sprites):
         super().__init__(group)
 
+        self.fatigue = 0
+        self.tired = 0 # not tired
         self.animations = {}  # create a directory for animations
         self.import_assets()  # run the function to import the assets
         self.status = 'down_idle'
@@ -23,6 +25,12 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(0, 0)  # default for now (empty)
         self.pos = pygame.math.Vector2(self.rect.center)
         self.speed = 200
+
+        # collision
+        self.hitbox = self.rect.copy().inflate(
+            (-126, -70))  # inflate takes a rectange and changes the dimension while keeping it centered (shrinking it)
+        self.collision_sprites = collision_sprites
+
 
         # timers
         self.timers = {  # create a directory with timers
@@ -77,6 +85,7 @@ class Player(pygame.sprite.Sprite):
     # right is 1 (x)
 
     def input(self):
+
         keys = pygame.key.get_pressed()  # fetch all options for keys that can get pressed
 
         if not self.timers['tool use'].active:  # if there is no timer active
@@ -100,6 +109,29 @@ class Player(pygame.sprite.Sprite):
                 self.status = 'right'
             else:
                 self.direction.x = 0  # user stopped pressing key therefore player doesn't move anymore horizontal
+
+            # sprinting
+            if keys[pygame.K_LSHIFT]:
+                if self.tired == 0:
+                    self.speed = 400  # sprinting
+                    self.fatigue += 0.1  # getting tired while sprinting
+
+                if self.fatigue > 20:
+                    self.tired = 1
+                    self.speed = 200
+
+            if not keys[pygame.K_LSHIFT]:  # resting
+                self.speed = 200
+                if self.fatigue > 0:
+                    self.fatigue -= 0.1
+                else:
+                    self.fatigue = 0  # Ensure fatigue doesn't go below 0
+
+                if self.fatigue == 0:
+                    self.tired = 0
+
+
+
 
             # tool use
             if keys[pygame.K_SPACE]:
@@ -153,6 +185,32 @@ class Player(pygame.sprite.Sprite):
         for timer in self.timers.values():
             timer.update()
 
+    def collision(self, direction):
+        for sprite in self.collision_sprites.sprites():
+            if hasattr(sprite, 'hitbox'): # check collision
+                if sprite.hitbox.colliderect(self.hitbox): # check for overlap
+                    if direction == 'horizontal': # check collision when moving horizontaly
+                        if self.direction.x > 0: # moving right
+                            self.hitbox.right = sprite.hitbox.left
+                        if self.direction.x < 0: # moving left
+                            self.hitbox.left = sprite.hitbox.right
+                        self.rect.centerx = self.hitbox.centerx  # updating rect of player (where he appears on screen , for example behind flower)
+                        self.pos.x = self.hitbox.centerx
+
+
+                # !! EXPLANATION !! , if player is coming towards a flower from the left and his right sprite
+                # collides with left sprite of flower make the players position on the left of the flower , vice verca with the other side and vertically
+
+
+                    if direction == 'vertical': # check collision when moving verticaly
+                        if self.direction.y > 0 : # moving down
+                            self.hitbox.bottom = sprite.hitbox.top
+                        if self.direction.y < 0 : # moving up
+                            self.hitbox.top = sprite.hitbox.bottom
+                        self.rect.centery = self.hitbox.centery
+                        self.pos.y = self.hitbox.centery
+
+
     def move(self, dt):
         # normalizing a vector
         if self.direction.magnitude() > 0:
@@ -162,11 +220,16 @@ class Player(pygame.sprite.Sprite):
         # updating horizontal and vertical movement separately using speed direction and delta time
         # horizontal movement
         self.pos.x += self.direction.x * self.speed * dt
-        self.rect.centerx = self.pos.x
+        self.hitbox.centerx = round(self.pos.x) # updating hitbox var for x
+        self.rect.centerx = self.hitbox.centerx
+        self.collision('horizontal') # check for collision after each movement (horizontal)
 
         # vertical movement
         self.pos.y += self.direction.y * self.speed * dt
-        self.rect.centery = self.pos.y
+        self.hitbox.centery = round(self.pos.y) # updating hitbox var for y
+        self.rect.centery = self.hitbox.centery
+        self.collision('vertical')  # check for collision after each movement (vertical)
+
 
     def update(self, dt):  # update player input to the screen
         self.input()
