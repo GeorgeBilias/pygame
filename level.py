@@ -54,7 +54,7 @@ class Level:
         # trees
 
         for obj in tmx_data.get_layer_by_name('Trees'):
-            Tree((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites,self.tree_sprites], obj.name)
+            Tree((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites,self.tree_sprites], obj.name, self.player_add)
 
         # collision tiles
         for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles(): # USING SET COLLISIONS FOR MAP MADE IN TILED
@@ -71,6 +71,9 @@ class Level:
         Generic(pos=(0, 0),
                 surf=pygame.image.load('Animations_stolen/Animations/graphics/world/ground.png').convert_alpha(),
                 groups=self.all_sprites, z=LAYERS['ground'])  # adding ground
+
+    def player_add(self, item):  # add item to inventory after some action
+        self.player.item_inventory[item] += 1
 
     def run(self, dt):
         # This method is called to run the level
@@ -89,6 +92,7 @@ class Level:
         # Display the overlay
 
         self.overlay.display()
+        print(self.player.item_inventory)
 
 
 # camera class

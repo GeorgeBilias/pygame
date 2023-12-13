@@ -54,13 +54,13 @@ class Particle(Generic):  # create particle effect
         self.image = new_surf  # make the surface white to display is getting destroyed
 
     def update(self, dt):
-        current_time = pygame.time.get_ticks() # get time
+        current_time = pygame.time.get_ticks()  # get time
         if current_time - self.start_time > self.duration:
-            self.kill()  # stop the particle animation if time has ran out
+            self.kill()  # stop the particle animation if time has run out
 
 
 class Tree(Generic):
-    def __init__(self, pos, surf, groups, name):
+    def __init__(self, pos, surf, groups, name, player_add):
         super().__init__(pos, surf, groups)
 
         # tree atributes
@@ -76,14 +76,18 @@ class Tree(Generic):
         self.apple_sprites = pygame.sprite.Group()
         self.create_fruit()
 
+        self.player_add = player_add
+
     def damage(self):  # method for damaging the tree
         self.health -= 1  # tree loses health
 
         if len(self.apple_sprites.sprites()) > 0:  # check if tree has apples
             random_apple = choice(self.apple_sprites.sprites())
 
-            # display particle when apple is destoyed
+            # display particle when apple is destroyed
             Particle(random_apple.rect.topleft, random_apple.image, self.groups()[0], LAYERS['fruit'])
+
+            self.player_add('apple')  # give apple to player after destroying tree
 
             random_apple.kill()
 
@@ -95,6 +99,7 @@ class Tree(Generic):
             self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
             self.hitbox = self.rect.copy().inflate(-10, -self.rect.height * 0.6)
             self.alive = False
+            self.player_add('wood') # give wood after tree is chopped down
 
     def update(self,dt):
         if self.alive :
