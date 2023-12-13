@@ -1,6 +1,6 @@
 # import pygame
 # from settings import *
-import pygame
+# import pygame
 
 from player import Player
 from overlay import Overlay

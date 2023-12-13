@@ -38,7 +38,7 @@ class Water(Generic):
 class WildFlower(Generic):
     def __init__(self, pos, surf, groups):
         super().__init__(pos, surf, groups)
-        self.hitbox = self.rect.copy().inflate(-20, -self.rect.height*0.9)
+        self.hitbox = self.rect.copy().inflate(-20, -self.rect.height * 0.9)
 
 
 class Particle(Generic):  # create particle effect
@@ -63,7 +63,7 @@ class Tree(Generic):
     def __init__(self, pos, surf, groups, name, player_add):
         super().__init__(pos, surf, groups)
 
-        # tree atributes
+        # tree attributes
         self.health = 5
         self.alive = True
         stump_path = f'Animations_stolen/Animations/graphics/stumps/{"small" if name == "Small" else "large"}.png'
@@ -91,28 +91,23 @@ class Tree(Generic):
 
             random_apple.kill()
 
-
     def check_death(self):
         if self.health <= 0:
-            Particle(self.rect.topleft,self.image, self.groups()[0],LAYERS['fruit'], 500)
+            Particle(self.rect.topleft, self.image, self.groups()[0], LAYERS['fruit'], 500)
             self.image = self.stump_surf
             self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
             self.hitbox = self.rect.copy().inflate(-10, -self.rect.height * 0.6)
             self.alive = False
-            self.player_add('wood') # give wood after tree is chopped down
+            self.player_add('wood')  # give wood after tree is chopped down
 
-    def update(self,dt):
-        if self.alive :
+    def update(self, dt):
+        if self.alive:
             self.check_death()
 
-
     def create_fruit(self):
-        for pos in self.apple_pos: # spawn apple ins random locations
-            if randint(0,10) < 2:
+        for pos in self.apple_pos:  # spawn apple ins random locations
+            if randint(0, 10) < 2:
                 # actual pos of apple from the borders
                 x = pos[0] + self.rect.left
                 y = pos[1] + self.rect.top
                 Generic((x, y), self.apples_surf, [self.apple_sprites, self.groups()[0]], LAYERS['fruit'])
-
-
-
