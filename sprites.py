@@ -41,6 +41,24 @@ class WildFlower(Generic):
         self.hitbox = self.rect.copy().inflate(-20, -self.rect.height*0.9)
 
 
+class Particle(Generic):  # create particle effect
+    def __init__(self, pos, surf, groups, z, duration=200):
+        super().__init__(pos, surf, groups, z=LAYERS['main'])
+        self.start_time = pygame.time.get_ticks()
+        self.duration = duration
+
+        # white surface
+        mask_surf = pygame.mask.from_surface(self.image)
+        new_surf = mask_surf.to_surface()
+        new_surf.set_colorkey((0, 0, 0))  # getting rid of black color
+        self.image = new_surf  # make the surface white to display is getting destroyed
+
+    def update(self, dt):
+        current_time = pygame.time.get_ticks() # get time
+        if current_time - self.start_time > self.duration:
+            self.kill()  # stop the particle animation if time has ran out
+
+
 class Tree(Generic):
     def __init__(self, pos, surf, groups, name):
         super().__init__(pos, surf, groups)
@@ -61,15 +79,20 @@ class Tree(Generic):
     def damage(self):  # method for damaging the tree
         self.health -= 1  # tree loses health
 
-        if len(self.apple_sprites.sprites()) > 0 : # check if tree has apples
+        if len(self.apple_sprites.sprites()) > 0:  # check if tree has apples
             random_apple = choice(self.apple_sprites.sprites())
+
+            # display particle when apple is destoyed
+            Particle(random_apple.rect.topleft, random_apple.image, self.groups()[0], LAYERS['fruit'])
+
             random_apple.kill()
 
 
     def check_death(self):
         if self.health <= 0:
+            Particle(self.rect.topleft,self.image, self.groups()[0],LAYERS['fruit'], 500)
             self.image = self.stump_surf
-            self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
+            self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
             self.hitbox = self.rect.copy().inflate(-10, -self.rect.height * 0.6)
             self.alive = False
 
