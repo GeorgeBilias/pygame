@@ -1,12 +1,14 @@
 # import pygame
 # from settings import *
-import pygame
 
-from player import Player
-from overlay import Overlay
-from sprites import *
 from pytmx.util_pygame import load_pygame
+
+from overlay import Overlay
+from player import Player
+from soil import SoilLayer
+from sprites import *
 from support import *
+from transition import Transition
 
 
 class Level:
@@ -19,10 +21,12 @@ class Level:
         self.all_sprites = CameraGroup()  # This is a group for all sprites in the game
         self.collision_sprites = pygame.sprite.Group()
         self.tree_sprites = pygame.sprite.Group()
-
+        self.interaction_sprites = pygame.sprite.Group()
+        self.soil_layer = SoilLayer(self.all_sprites)
 
         self.setup()
         self.overlay = Overlay(self.player)  # setting up Overlay class
+        self.transition = Transition(self.reset, self.player)
 
     def setup(self):
 
@@ -54,19 +58,21 @@ class Level:
         # trees
 
         for obj in tmx_data.get_layer_by_name('Trees'):
-            Tree((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites,self.tree_sprites], obj.name, self.player_add)
+            Tree((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.tree_sprites], obj.name,
+                 self.player_add)
 
         # collision tiles
-        for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles(): # USING SET COLLISIONS FOR MAP MADE IN TILED
-            Generic((x*TILE_SIZE,y*TILE_SIZE), pygame.Surface((TILE_SIZE,TILE_SIZE)), self.collision_sprites)
-
+        for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():  # USING SET COLLISIONS FOR MAP MADE IN TILED
+            Generic((x * TILE_SIZE, y * TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), self.collision_sprites)
 
         # Player
         for obj in tmx_data.get_layer_by_name('Player'):
-            if obj.name == 'Start' :
-                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites, self.tree_sprites)  # initialising player
+            if obj.name == 'Start':
+                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites, self.tree_sprites,
+                                     self.interaction_sprites, self.soil_layer)  # initialising player
 
-
+            if obj.name == 'Bed':  # creating area to sleep
+                Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
         Generic(pos=(0, 0),
                 surf=pygame.image.load('Animations_stolen/Animations/graphics/world/ground.png').convert_alpha(),
@@ -92,7 +98,20 @@ class Level:
         # Display the overlay
 
         self.overlay.display()
-        print(self.player.item_inventory)
+        # print(self.player.item_inventory)
+
+        if self.player.sleep:
+            self.transition.play()  # play animation for sleeping (calls reset too)
+
+    def reset(self):
+
+        # apples reset
+        for tree in self.tree_sprites.sprites():
+            for apple in tree.apple_sprites.sprites():
+                apple.kill()  # destroy all remaining apples
+            if tree.alive:
+                tree.create_fruit()
+        print("level reset")
 
 
 # camera class

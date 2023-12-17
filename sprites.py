@@ -13,6 +13,11 @@ class Generic(pygame.sprite.Sprite):
         self.z = z
         self.hitbox = self.rect.copy().inflate(-self.rect.width * 0.2, -self.rect.height * 0.7)
 
+class Interaction(Generic):
+    def __init__(self, pos, size, groups, name):  # interact with the environment class
+        surf = pygame.Surface(size)
+        super().__init__(pos, surf, groups)
+        self.name = name
 
 class Water(Generic):
     def __init__(self, pos, frames, groups):
@@ -108,7 +113,7 @@ class Tree(Generic):
 
     def create_fruit(self):
         for pos in self.apple_pos: # spawn apple ins random locations
-            if randint(0,10) < 2:
+            if randint(0, 3) < 2:
                 # actual pos of apple from the borders
                 x = pos[0] + self.rect.left
                 y = pos[1] + self.rect.top

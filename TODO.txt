@@ -6,3 +6,4 @@ https://www.youtube.com/watch?v=T4IX36sP_0c&t=121s [3:21:59]
 #TODO change overlay to look like minecraft
 #TODO maybe make the inventory a grid
 #TODO maybe change the camera layers to be more like minecraft
+#TODO maybe add more areas for the player to interact with
