@@ -119,7 +119,6 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_w]:  # pressing the w button to go up
                 self.direction.y = -1  # set the direction to up
                 self.status = 'up'
-                print("up")
             elif keys[pygame.K_s]:  # pressing the s button to go down
                 self.direction.y = 1  # set the direction to down
                 self.status = 'down'
