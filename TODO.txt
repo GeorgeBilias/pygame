@@ -1,4 +1,4 @@
-https://www.youtube.com/watch?v=T4IX36sP_0c&t=121s [4:43:22]
+https://www.youtube.com/watch?v=T4IX36sP_0c&t=121s [5:03:35]
 
 #TODO make tools and seeds dynamic
 #TODO scrollable items despite with the use of key
