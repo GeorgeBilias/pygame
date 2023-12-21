@@ -9,6 +9,8 @@ from soil import SoilLayer
 from sprites import *
 from support import *
 from transition import Transition
+from sky import Rain
+from random import randint
 
 
 class Level:
@@ -27,6 +29,11 @@ class Level:
         self.setup()
         self.overlay = Overlay(self.player)  # setting up Overlay class
         self.transition = Transition(self.reset, self.player)
+
+        # sky
+        self.rain = Rain(self.all_sprites)
+        self.raining = randint(0, 10) > 3
+        self.soil_layer.raining = self.raining
 
     def setup(self):
 
@@ -100,6 +107,12 @@ class Level:
         self.overlay.display()
         # print(self.player.item_inventory)
 
+        # rain
+        if self.raining:
+            self.rain.update()
+
+
+
         if self.player.sleep:
             self.transition.play()  # play animation for sleeping (calls reset too)
 
@@ -107,6 +120,11 @@ class Level:
 
         # soil
         self.soil_layer.remove_water()
+
+        self.raining = randint(0, 10) > 3
+        self.soil_layer.raining = self.raining
+        if self.raining:  # if its raining , drop water to all already existing soils
+            self.soil_layer.water_all()
 
         # apples reset
         for tree in self.tree_sprites.sprites():
