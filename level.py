@@ -9,7 +9,7 @@ from soil import SoilLayer
 from sprites import *
 from support import *
 from transition import Transition
-from sky import Rain
+from sky import Rain, Sky
 from random import randint
 
 
@@ -34,6 +34,7 @@ class Level:
         self.rain = Rain(self.all_sprites)
         self.raining = randint(0, 10) > 3
         self.soil_layer.raining = self.raining
+        self.sky = Sky()
 
     def setup(self):
 
@@ -113,6 +114,10 @@ class Level:
             self.rain.update()
 
 
+        # daytime
+        self.sky.display(dt)
+
+
 
         if self.player.sleep:
             self.transition.play()  # play animation for sleeping (calls reset too)
@@ -136,6 +141,9 @@ class Level:
             if tree.alive:
                 tree.create_fruit()
         print("level reset")
+
+        # sky
+        self.sky.start_color [255,255,255]
 
     def plant_collision(self):
         #check if we have plants
