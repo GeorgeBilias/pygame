@@ -24,7 +24,7 @@ class Level:
         self.collision_sprites = pygame.sprite.Group()
         self.tree_sprites = pygame.sprite.Group()
         self.interaction_sprites = pygame.sprite.Group()
-        self.soil_layer = SoilLayer(self.all_sprites)
+        self.soil_layer = SoilLayer(self.all_sprites,self.collision_sprites)
 
         self.setup()
         self.overlay = Overlay(self.player)  # setting up Overlay class
@@ -102,6 +102,7 @@ class Level:
         # Update all sprites in the game, applying any changes
         self.all_sprites.update(dt)  # This updates the sprites in our game
 
+        self.plant_collision()
         # Display the overlay
 
         self.overlay.display()
@@ -115,8 +116,10 @@ class Level:
 
         if self.player.sleep:
             self.transition.play()  # play animation for sleeping (calls reset too)
-
+        print(self.player.item_inventory)
     def reset(self):
+        #plants
+        self.soil_layer.update_plants()
 
         # soil
         self.soil_layer.remove_water()
@@ -133,6 +136,20 @@ class Level:
             if tree.alive:
                 tree.create_fruit()
         print("level reset")
+
+    def plant_collision(self):
+        #check if we have plants
+        if self.soil_layer.plant_sprites:
+            for plant in self.soil_layer.plant_sprites.sprites():
+                #checking if the plant can be collect and it collieded with the player
+                if plant.harvestable and plant.rect.colliderect(self.player.hitbox):
+                    #adding the plan to player inventory
+                    self.player_add(plant.plant_type)
+                    plant.kill()
+                    #effect when the plan is collected
+                    Particle(plant.rect.topleft,plant.image,self.all_sprites,z= LAYERS['main'])
+                    self.soil_layer.grid[plant.rect.centery// TILE_SIZE][plant.rect.centerx// TILE_SIZE].remove('P')
+
 
 
 # camera class

@@ -81,7 +81,7 @@ class Player(pygame.sprite.Sprite):
 
     def use_seed(self):  # function for using tool
         # print(self.selected_tool) # just a print for now
-        pass
+        self.soil_layer.plant_seed(self.target_pos,self.selected_seed)
 
     def import_assets(self):
         # adding player states
