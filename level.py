@@ -11,6 +11,7 @@ from support import *
 from transition import Transition
 from sky import Rain, Sky
 from random import randint
+from menu import Menu
 
 
 class Level:
@@ -35,6 +36,10 @@ class Level:
         self.raining = randint(0, 10) > 3
         self.soil_layer.raining = self.raining
         self.sky = Sky()
+
+        # shop
+        self.menu = Menu(self.player, self.toggle_shop)
+        self.shop_active = False
 
     def setup(self):
 
@@ -77,10 +82,15 @@ class Level:
         for obj in tmx_data.get_layer_by_name('Player'):
             if obj.name == 'Start':
                 self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites, self.tree_sprites,
-                                     self.interaction_sprites, self.soil_layer)  # initialising player
+                                     self.interaction_sprites, self.soil_layer, self.toggle_shop)  # initialising player
 
             if obj.name == 'Bed':  # creating area to sleep
                 Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+
+            if obj.name =='Trader':
+                Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+
+
 
         Generic(pos=(0, 0),
                 surf=pygame.image.load('Animations_stolen/Animations/graphics/world/ground.png').convert_alpha(),
@@ -89,39 +99,39 @@ class Level:
     def player_add(self, item):  # add item to inventory after some action
         self.player.item_inventory[item] += 1
 
+    def toggle_shop(self):
+        self.shop_active = not self.shop_active
+
     def run(self, dt):
         # This method is called to run the level
 
-        # print("Level running")
-
         # Fill the display surface with a black color (background)
         self.display_surface.fill('black')
+
 
         # Draw all sprites onto the display surface
         self.all_sprites.custom_draw(self.player)
 
         # Update all sprites in the game, applying any changes
-        self.all_sprites.update(dt)  # This updates the sprites in our game
+        if self.shop_active:
+            self.menu.update()
+        else:
+            self.all_sprites.update(dt)  # This updates the sprites in our game
+            self.plant_collision()
 
-        self.plant_collision()
-        # Display the overlay
-
+        # weather
         self.overlay.display()
-        # print(self.player.item_inventory)
-
-        # rain
-        if self.raining:
+        if self.raining and not self.shop_active:
             self.rain.update()
 
-
-        # daytime
         self.sky.display(dt)
 
-
-
+        # transition overlay
         if self.player.sleep:
             self.transition.play()  # play animation for sleeping (calls reset too)
-        print(self.player.item_inventory)
+
+
+
     def reset(self):
         #plants
         self.soil_layer.update_plants()

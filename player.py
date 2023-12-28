@@ -5,7 +5,7 @@ from timer import Timer
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer):
+    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer, toggle_shop):
         super().__init__(group)
 
         self.fatigue = 0
@@ -57,11 +57,19 @@ class Player(pygame.sprite.Sprite):
             'tomato': 0
         }
 
+        self.seed_inventory = {
+            'corn': 5,
+            'tomato':5
+
+        }
+        self.money = 200
+
         # interaction
         self.tree_sprites = tree_sprites
         self.interaction = interaction
         self.sleep = False
         self.soil_layer = soil_layer
+        self.toggle_shop = toggle_shop
 
     def use_tool(self):  # function for using tool
         print("tool use")
@@ -81,7 +89,9 @@ class Player(pygame.sprite.Sprite):
 
     def use_seed(self):  # function for using tool
         # print(self.selected_tool) # just a print for now
-        self.soil_layer.plant_seed(self.target_pos,self.selected_seed)
+        if self.seed_inventory[self.selected_seed] >0:
+            self.soil_layer.plant_seed(self.target_pos,self.selected_seed)
+            self.seed_inventory[self.selected_seed] - 1
 
     def import_assets(self):
         # adding player states
@@ -194,6 +204,8 @@ class Player(pygame.sprite.Sprite):
                     if collided_interaction_sprite[0].name == 'Bed':  # if we are in trader area
                         self.status = 'left_idle'
                         self.sleep = True
+                    else:
+                        self.toggle_shop()
 
     def get_status(self):
         # if player is not moving
