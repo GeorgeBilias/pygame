@@ -153,7 +153,9 @@ class Level:
         print("level reset")
 
         # sky
-        self.sky.start_color [255,255,255]
+        self.sky.start_color[0] = 255
+        self.sky.start_color[1] = 255
+        self.sky.start_color[2] = 255
 
     def plant_collision(self):
         #check if we have plants

@@ -113,7 +113,8 @@ class Tree(Generic):
 
     def create_fruit(self):
         for pos in self.apple_pos: # spawn apple ins random locations
-            if randint(0, 3) < 2:
+            if randint(0, 10) < 2:
+                print("creating apples")
                 # actual pos of apple from the borders
                 x = pos[0] + self.rect.left
                 y = pos[1] + self.rect.top

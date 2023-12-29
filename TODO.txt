@@ -1,5 +1,5 @@
 
-https://www.youtube.com/watch?v=T4IX36sP_0c&t=121s [5:53:27 ]
+https://www.youtube.com/watch?v=T4IX36sP_0c&t=121s [6:25:24]
 
 #TODO make tools and seeds dynamic
 #TODO scrollable items despite with the use of key
@@ -8,3 +8,4 @@ https://www.youtube.com/watch?v=T4IX36sP_0c&t=121s [5:53:27 ]
 #TODO maybe make the inventory a grid
 #TODO maybe change the camera layers to be more like minecraft
 #TODO maybe add more areas for the player to interact with
+# TODO maybe add enenies and sword

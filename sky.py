@@ -59,8 +59,8 @@ class Sky:
     def __init__(self):
         self.display_surface = pygame.display.get_surface()
         self.full_surf = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
-        self.start_color = [255, 255, 255]
-        self.end_color = (38, 101, 189)
+        self.start_color = [255,255,255]
+        self.end_color = (38,101,189)
 
 
     def display(self, dt):
