@@ -73,7 +73,7 @@ class Tree(Generic):
         self.alive = True
         stump_path = f'Animations_stolen/Animations/graphics/stumps/{"small" if name == "Small" else "large"}.png'
         self.stump_surf = pygame.image.load(stump_path).convert_alpha()
-        self.invul_timer = Timer(200)
+        #self.invul_timer = Timer(200)
 
         # apples
         self.apples_surf = pygame.image.load('Animations_stolen/Animations/graphics/fruit/apple.png')
@@ -83,8 +83,14 @@ class Tree(Generic):
 
         self.player_add = player_add
 
+        #import sound
+        self.axe_sound = pygame.mixer.Sound('Animations_stolen/Animations/audio/axe.mp3')
+
     def damage(self):  # method for damaging the tree
         self.health -= 1  # tree loses health
+
+        #sound effect
+        self.axe_sound.play()
 
         if len(self.apple_sprites.sprites()) > 0:  # check if tree has apples
             random_apple = choice(self.apple_sprites.sprites())

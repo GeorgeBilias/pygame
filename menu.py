@@ -49,6 +49,11 @@ class Menu:
         self.menu_top = SCREEN_HEIGHT / 2 - self.total_height / 2
         self.main_rect = pygame.Rect(SCREEN_WIDTH/2 - self.width/2,self.menu_top,self.width,self.total_height)
 
+        #buy and sell text surface
+        self.buy_text = self.font.render('buy',False,'Black')
+        self.sell_text = self.font.render('sell',False,'Black')
+
+
 
     def input(self):
 
@@ -67,6 +72,28 @@ class Menu:
             if keys[pygame.K_DOWN]:
                 self.index += 1
                 self.timer.activate()
+
+            if keys[pygame.K_SPACE]:
+                self.timer.activate()
+
+                #get item
+                curent_item = self.options[self.index]
+                print(curent_item)
+
+                #SELL
+                if self.index <= self.sell_border:
+                    if self.player.item_inventory[curent_item]>0:
+                        self.player.item_inventory[curent_item]-= 1
+                        self.player.money +=SALE_PRICES[curent_item]
+
+
+                else:
+
+                    #BUY
+                    seed_price = PURCHASE_PRICES[curent_item]
+                    if self.player.money >= seed_price:
+                        self.player.item_inventory[curent_item] +=1
+                        self.player.money -= PURCHASE_PRICES[curent_item]
 
         # clamp values
         if self.index < 0:
@@ -95,6 +122,15 @@ class Menu:
         # selected
         if selected:
             pygame.draw.rect(self.display_surface, 'black',bg_rect,4,4)
+            if self.index<= self.sell_border: #sell
+                pos_rect = self.sell_text.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
+                self.display_surface.blit(self.sell_text,pos_rect)
+            else: #buy
+                pos_rect = self.buy_text.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
+
+                self.display_surface.blit(self.buy_text,pos_rect)
+
+
 
     def update(self):
         self.input()

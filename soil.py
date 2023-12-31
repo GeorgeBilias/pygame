@@ -87,6 +87,13 @@ class SoilLayer:
         # if the soil has been watered
         # if soil has a plant already or not
 
+        #sounds
+        self.hoe_sound = pygame.mixer.Sound('Animations_stolen/Animations/audio/hoe.wav')
+        self.hoe_sound.set_volume(0.4)
+
+        self.plant_sound = pygame.mixer.Sound('Animations_stolen/Animations/audio/plant.wav')
+        self.plant_sound.set_volume(0.2)
+
     def create_soil_grid(self):  # creating a grid that represents tiles in the map to manage the data
         ground = pygame.image.load('Animations_stolen/Animations/graphics/world/ground.png')
         h_tiles, v_tiles = ground.get_width() // TILE_SIZE, ground.get_height() // TILE_SIZE
@@ -112,6 +119,8 @@ class SoilLayer:
     def get_hit(self, point):
         for rect in self.hit_rects:
             if rect.collidepoint(point):
+                self.hoe_sound.play()
+
                 x = rect.x // TILE_SIZE
                 y = rect.y // TILE_SIZE
 
@@ -167,6 +176,7 @@ class SoilLayer:
     def plant_seed(self,target_pos,seed):
         for soil_sprite in self.soil_sprites.sprites():
             if soil_sprite.rect.collidepoint(target_pos):
+                self.plant_sound.play()
 
                 x = soil_sprite.rect.x // TILE_SIZE
                 y = soil_sprite.rect.y // TILE_SIZE
