@@ -128,3 +128,41 @@ class Tree(Generic):
 
 
 
+class Cow(Generic):
+    def __init__(self, pos, surf, groups, name, feed_player):
+        super().__init__(pos, surf, groups)
+
+        # tree atributes
+        self.health = 5
+        self.alive = True
+
+        self.feed_player = feed_player
+
+        #import sound
+        self.cow_hurt = pygame.mixer.Sound('Animations_stolen/Animations/audio/cow_hurt.mp3')
+        self.cow_dead = pygame.mixer.Sound('Animations_stolen/Animations/audio/cow_death.mp3')
+        self.cow_hurt.set_volume(0.3)
+        self.rect.inflate_ip(+self.rect.width*1.3, +self.rect.height*1.3)
+        self.image = pygame.transform.scale(self.image, (70, 70))
+
+
+    def damage(self):  # method for damaging the tree
+        self.health -= 1  # tree loses health
+
+        #sound effect
+        self.cow_hurt.play()
+
+        print("damaged")
+
+    def check_death(self):
+        if self.health <= 0:
+            self.cow_dead.play()
+            self.feed_player("Cow")
+            print("dead")
+            self.alive = False
+            self.kill()
+
+    def update(self,dt):
+        if self.alive :
+            self.check_death()
+

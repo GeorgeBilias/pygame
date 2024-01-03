@@ -5,10 +5,11 @@ from timer import Timer
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer, toggle_shop):
+    def __init__(self, pos, group, collision_sprites, tree_sprites,cow_sprites, interaction, soil_layer, toggle_shop):
         super().__init__(group)
 
         self.fatigue = 0
+        self.hunger = 100 # max is 100
         self.tired = 0  # not tired
         self.animations = {}  # create a directory for animations
         self.import_assets()  # run the function to import the assets
@@ -41,7 +42,7 @@ class Player(pygame.sprite.Sprite):
         }
 
         # tools
-        self.tools = ['hoe', 'axe', 'water']  # set the tools available
+        self.tools = ['hoe', 'axe', 'sword', 'water']  # set the tools available
         self.tool_index = 0  # set default tool
         self.selected_tool = self.tools[self.tool_index]  # set selected tool
 
@@ -66,6 +67,7 @@ class Player(pygame.sprite.Sprite):
 
         # interaction
         self.tree_sprites = tree_sprites
+        self.cow_sprites = cow_sprites
         self.interaction = interaction
         self.sleep = False
         self.soil_layer = soil_layer
@@ -74,6 +76,10 @@ class Player(pygame.sprite.Sprite):
         #water sound
         self.water = pygame.mixer.Sound('Animations_stolen/Animations/audio/water.mp3')
         self.water.set_volume(0.2)
+
+        # hunger images
+        self.full_steak_img = pygame.image.load("Animations_stolen/Animations/graphics/hunger/full.png")
+        self.empty_steak_img = pygame.image.load("Animations_stolen/Animations/graphics/hunger/empty.png")
 
     def use_tool(self):  # function for using tool
         print("tool use")
@@ -84,6 +90,11 @@ class Player(pygame.sprite.Sprite):
             for tree in self.tree_sprites.sprites():
                 if tree.rect.collidepoint(self.target_pos):  # if the axe is colliding with tree
                     tree.damage()
+            
+            for cow in self.cow_sprites.sprites():
+                if cow.rect.collidepoint(self.target_pos):
+                    cow.damage()
+                    
 
         if self.selected_tool == 'water':
             self.soil_layer.water(self.target_pos)
@@ -112,6 +123,7 @@ class Player(pygame.sprite.Sprite):
 
     def animate(self, dt):
         self.frame_index += 4 * dt  # use dt to iterate through phases
+        print(self.animations[self.status])
         if self.frame_index >= len(self.animations[self.status]):  # if the animation counter is over the limit
             self.frame_index = 0  # back to the beginning to the animation 1 -> 2 -> 3 -> 4 for example
 
@@ -134,9 +146,13 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_w]:  # pressing the w button to go up
                 self.direction.y = -1  # set the direction to up
                 self.status = 'up'
+                self.remove_hunger(0.01)
+                print(self.hunger)
             elif keys[pygame.K_s]:  # pressing the s button to go down
                 self.direction.y = 1  # set the direction to down
                 self.status = 'down'
+                self.remove_hunger(0.01)
+                print(self.hunger)
             else:
                 self.direction.y = 0  # user stopped pressing key therefore player doesn't move anymore vertically
 
@@ -144,14 +160,25 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_a]:  # pressing the "a" button to go left
                 self.direction.x = -1  # setting direction to go left
                 self.status = 'left'
+                self.remove_hunger(0.01)
+                print(self.hunger)
             elif keys[pygame.K_d]:  # pressing the d button to go right
                 self.direction.x = 1  # setting direction to go right
                 self.status = 'right'
+                self.remove_hunger(0.01)
+                print(self.hunger)
             else:
                 self.direction.x = 0  # user stopped pressing key therefore player doesn't move anymore horizontal
 
+            if keys[pygame.K_LSHIFT] and (keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[
+                pygame.K_d]):
+                self.remove_hunger(0.1)
+                print(self.hunger)
+
+
             # sprinting
-            if keys[pygame.K_LSHIFT]:
+            if keys[pygame.K_LSHIFT] and self.hunger > 20:
+
                 if self.tired == 0:
                     self.speed = 400  # sprinting
                     self.fatigue += 0.1  # getting tired while sprinting
@@ -176,6 +203,7 @@ class Player(pygame.sprite.Sprite):
                 self.timers['tool use'].activate()  # activate the use of tool
                 self.direction = pygame.math.Vector2()  # stop moving
                 self.frame_index = 0  # fix frame issue by resetting the index
+                self.remove_hunger(0.3)
             # seed use
             if keys[pygame.K_LCTRL]:
                 # setting timer for tool use
@@ -273,6 +301,38 @@ class Player(pygame.sprite.Sprite):
         self.rect.centery = self.hitbox.centery
         self.collision('vertical')  # check for collision after each movement (vertical)
 
+    def add_hunger_pig(self):
+        if self.hunger <100 :
+            self.hunger += 10
+            print("fed player")
+
+    def add_hunger_cow(self):
+        if self.hunger < 100:
+            self.hunger += 10
+
+    def add_hunger_chicken(self):
+        if self.hunger < 100:
+            self.hunger += 8
+
+    def remove_hunger(self, amount):
+        if self.hunger - amount >= 0:
+            self.hunger -= amount
+            print("removed hunger")
+
+    def return_hunger(self):
+        return self.hunger
+    
+    def draw_hunger_indicator(self,hunger_level):
+        x, y = SCREEN_WIDTH - 100, 10  # Top right corner
+        steak_size = 0.01  # Size of each steak icon
+        spacing = 40  # Spacing between steak icons
+        screen = pygame.display.get_surface()
+
+        for i in range(10):
+            steak_surface = self.full_steak_img if i < hunger_level // 10 else self.empty_steak_img
+            screen.blit(steak_surface, (x, y))
+            x -= steak_size + spacing
+
     def update(self, dt):  # update player input to the screen
         self.input()
         self.get_status()
@@ -280,3 +340,4 @@ class Player(pygame.sprite.Sprite):
         self.get_target_()
         self.animate(dt)
         self.update_timers()
+        self.draw_hunger_indicator(self.hunger)

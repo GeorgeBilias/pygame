@@ -24,6 +24,7 @@ class Level:
         self.all_sprites = CameraGroup()  # This is a group for all sprites in the game
         self.collision_sprites = pygame.sprite.Group()
         self.tree_sprites = pygame.sprite.Group()
+        self.cow_sprites = pygame.sprite.Group()
         self.interaction_sprites = pygame.sprite.Group()
         self.soil_layer = SoilLayer(self.all_sprites,self.collision_sprites)
 
@@ -42,10 +43,11 @@ class Level:
         self.shop_active = False
 
         self.success = pygame.mixer.Sound('Animations_stolen/Animations/audio/success.wav')
-        self.success.set_volume(0.3)
+        self.success.set_volume(0.2)
 
         self.music = pygame.mixer.Sound('Animations_stolen/Animations/audio/music.mp3')
         self.music.play(loops=-1)
+        self.music.set_volume(0.1)
     def setup(self):
 
         tmx_data = load_pygame('Animations_stolen/Animations/data/map.tmx')  # loading tmx file
@@ -78,6 +80,11 @@ class Level:
         for obj in tmx_data.get_layer_by_name('Trees'):
             Tree((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.tree_sprites], obj.name,
                  self.player_add)
+            
+        # cows
+        for obj in tmx_data.get_layer_by_name('Cows'):
+            Cow((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites], obj.name,
+                self.feed_player)
 
         # collision tiles
         for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():  # USING SET COLLISIONS FOR MAP MADE IN TILED
@@ -86,7 +93,7 @@ class Level:
         # Player
         for obj in tmx_data.get_layer_by_name('Player'):
             if obj.name == 'Start':
-                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites, self.tree_sprites,
+                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites, self.tree_sprites,self.cow_sprites,
                                      self.interaction_sprites, self.soil_layer, self.toggle_shop)  # initialising player
 
             if obj.name == 'Bed':  # creating area to sleep
@@ -104,6 +111,12 @@ class Level:
     def player_add(self, item):  # add item to inventory after some action
         self.player.item_inventory[item] += 1
         self.success.play()
+
+    def feed_player(self,animal):
+        if animal == "Cow":
+            self.player.add_hunger_cow()
+            # fed player
+            print(self.player.hunger)
 
     def toggle_shop(self):
         self.shop_active = not self.shop_active

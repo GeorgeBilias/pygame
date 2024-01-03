@@ -8,4 +8,5 @@ https://www.youtube.com/watch?v=T4IX36sP_0c&t=121s [DONE]
 #TODO maybe make the inventory a grid
 #TODO maybe change the camera layers to be more like minecraft
 #TODO maybe add more areas for the player to interact with
-# TODO maybe add enenies and sword
+#TODO maybe add enemies and sword
+#TODO chicken,pig,camel,penguin

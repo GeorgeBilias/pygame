@@ -51,3 +51,9 @@ PURCHASE_PRICES = {
     'corn': 4,
     'tomato': 5
 }
+
+# monsters
+
+monster_data = {
+    'zombie': {'health': 100 , 'exp':100, 'damage':10, 'attack_sound':'','speed':2, 'notice_radius':360, 'attack_radius':500}
+}
