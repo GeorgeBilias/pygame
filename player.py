@@ -90,7 +90,7 @@ class Player(pygame.sprite.Sprite):
             for tree in self.tree_sprites.sprites():
                 if tree.rect.collidepoint(self.target_pos):  # if the axe is colliding with tree
                     tree.damage()
-            
+        if self.selected_tool == 'sword':
             for cow in self.cow_sprites.sprites():
                 if cow.rect.collidepoint(self.target_pos):
                     cow.damage()
@@ -115,7 +115,8 @@ class Player(pygame.sprite.Sprite):
                            'left_idle': [], 'up_idle': [], 'down_idle': [], 'right_hoe': [],
                            'left_hoe': [], 'up_hoe': [], 'down_hoe': [], 'right_axe': [],
                            'left_axe': [], 'up_axe': [], 'down_axe': [], 'right_water': [],
-                           'left_water': [], 'up_water': [], 'down_water': []}
+                           'left_water': [], 'up_water': [], 'down_water': [], 'left_sword': [],
+                           'right_sword': [],'up_sword': [],'down_sword': []}
 
         for animation in self.animations.keys():
             full_path = 'Animations_stolen/Animations/graphics/character/' + animation  # path of animations
