@@ -9,7 +9,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__(group)
 
         self.fatigue = 0
-        self.hunger = 100  # max is 100
+        self.hunger = 100 # max is 100
         self.health = 100  # max is 100
         self.tired = 0  # not tired
         self.animations = {}  # create a directory for animations
@@ -394,6 +394,8 @@ class Player(pygame.sprite.Sprite):
         # Display a button to remove the game over image
         button_image = pygame.image.load("Animations_stolen/Animations/graphics/game_over/respawn.png")
         button_rect = button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100))
+        easter_egg_sound = pygame.mixer.Sound("Animations_stolen/Animations/audio/easter_egg.mp3")
+        easter_egg_sound.play()
 
         # Display button image
         pygame.display.get_surface().blit(button_image, button_rect)
