@@ -45,9 +45,9 @@ if __name__ == "__main__":
     start_button_rect = start_button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100))
 
     # Load and scale the exit button image
-    exit_button_image = pygame.image.load("Animations_stolen/Animations/start_button.png")
+    exit_button_image = pygame.image.load("Animations_stolen/Animations/exit_button.png")
     exit_button_image = pygame.transform.scale(exit_button_image, (new_button_width, new_button_height))
-    exit_button_rect = exit_button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200))
+    exit_button_rect = exit_button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 170))
 
     # Main menu loop
     start_button_clicked = False
