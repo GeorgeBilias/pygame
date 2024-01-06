@@ -9,8 +9,8 @@ class Player(pygame.sprite.Sprite):
         super().__init__(group)
 
         self.fatigue = 0
-        self.hunger = 10 # max is 100
-        self.health = 10  # max is 100
+        self.hunger = 100 # max is 100
+        self.health = 100  # max is 100
         self.tired = 0  # not tired
         self.animations = {}  # create a directory for animations
         self.import_assets()  # run the function to import the assets
