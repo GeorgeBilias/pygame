@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 from settings import *
 from support import *
@@ -255,6 +257,32 @@ class Player(pygame.sprite.Sprite):
                         self.sleep = True
                     else:
                         self.toggle_shop()
+
+            if keys[pygame.K_ESCAPE]:
+                # Display a quit button
+                new_button_width, new_button_height = 200, 50
+                exit_button_image = pygame.image.load("Animations_stolen/Animations/exit_button.png")
+                exit_button_image = pygame.transform.scale(exit_button_image, (new_button_width, new_button_height))
+                exit_button_rect = exit_button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+                pygame.display.get_surface().blit(exit_button_image, exit_button_rect)
+                pygame.display.flip()
+
+                # Wait for a button click
+                quit_clicked = False
+                while not quit_clicked:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            pygame.quit()
+                            sys.exit()
+                        elif event.type == pygame.MOUSEBUTTONDOWN:
+                            x, y = event.pos
+                            if exit_button_rect.collidepoint(x, y):
+                                pygame.quit()
+                                sys.exit()
+
+                # Remove the quit button
+                pygame.display.get_surface().fill((0, 0, 0))
+                pygame.display.flip()
 
     def get_status(self):
         # if player is not moving
