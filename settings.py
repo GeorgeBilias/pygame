@@ -52,8 +52,22 @@ PURCHASE_PRICES = {
     'tomato': 5
 }
 
-# monsters
+UPGRADE_PRICES = {
+    'sword': 20,
+    'axe': 20
+}
 
-monster_data = {
-    'zombie': {'health': 100 , 'exp':100, 'damage':10, 'attack_sound':'','speed':2, 'notice_radius':360, 'attack_radius':500}
+UPGRADE_PRICES2 = {
+    'sword': 40,
+    'axe': 40
+}
+
+UPGRADE_PRICES3 = {
+    'sword': 60,
+    'axe': 60
+}
+
+UPGRADE_PRICES4 = {
+    'sword': 80,
+    'axe': 80
 }

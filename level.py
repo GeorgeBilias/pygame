@@ -26,7 +26,7 @@ class Level:
         self.tree_sprites = pygame.sprite.Group()
         self.cow_sprites = pygame.sprite.Group()
         self.interaction_sprites = pygame.sprite.Group()
-        self.soil_layer = SoilLayer(self.all_sprites,self.collision_sprites)
+        self.soil_layer = SoilLayer(self.all_sprites, self.collision_sprites)
 
         self.setup()
         self.overlay = Overlay(self.player)  # setting up Overlay class
@@ -48,6 +48,7 @@ class Level:
         self.music = pygame.mixer.Sound('Animations_stolen/Animations/audio/music.mp3')
         self.music.play(loops=-1)
         self.music.set_volume(0.1)
+
     def setup(self):
 
         tmx_data = load_pygame('Animations_stolen/Animations/data/map.tmx')  # loading tmx file
@@ -80,7 +81,7 @@ class Level:
         for obj in tmx_data.get_layer_by_name('Trees'):
             Tree((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.tree_sprites], obj.name,
                  self.player_add)
-            
+
         # cows
         for obj in tmx_data.get_layer_by_name('Cows'):
             Cow((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites], obj.name,
@@ -93,16 +94,15 @@ class Level:
         # Player
         for obj in tmx_data.get_layer_by_name('Player'):
             if obj.name == 'Start':
-                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites, self.tree_sprites,self.cow_sprites,
+                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites, self.tree_sprites,
+                                     self.cow_sprites,
                                      self.interaction_sprites, self.soil_layer, self.toggle_shop)  # initialising player
 
             if obj.name == 'Bed':  # creating area to sleep
                 Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
-            if obj.name =='Trader':
+            if obj.name == 'Trader':
                 Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
-
-
 
         Generic(pos=(0, 0),
                 surf=pygame.image.load('Animations_stolen/Animations/graphics/world/ground.png').convert_alpha(),
@@ -112,7 +112,7 @@ class Level:
         self.player.item_inventory[item] += 1
         self.success.play()
 
-    def feed_player(self,animal):
+    def feed_player(self, animal):
         if animal == "Cow":
             self.player.add_hunger_cow()
             # fed player
@@ -127,7 +127,6 @@ class Level:
         # Fill the display surface with a black color (background)
         self.display_surface.fill('black')
 
-
         # Draw all sprites onto the display surface
         self.all_sprites.custom_draw(self.player)
 
@@ -139,7 +138,10 @@ class Level:
             self.plant_collision()
 
         # weather
+        self.overlay.set_image_sword(self.player.sword_lvl)
+        self.overlay.set_image_axe(self.player.axe_lvl)
         self.overlay.display()
+
         if self.raining and not self.shop_active:
             self.rain.update()
 
@@ -149,10 +151,21 @@ class Level:
         if self.player.sleep:
             self.transition.play()  # play animation for sleeping (calls reset too)
 
-
+    def respawn_animals(self, tmx_data):
+        # cows
+        for obj in tmx_data.get_layer_by_name('Cows'):
+            Cow((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites], obj.name,
+                self.feed_player)
 
     def reset(self):
-        #plants
+
+        # respawn animals
+        self.respawn_animals(load_pygame('Animations_stolen/Animations/data/map.tmx'))
+
+        # reset player health
+        self.player.health = 100
+
+        # plants
         self.soil_layer.update_plants()
 
         # soil
@@ -177,18 +190,17 @@ class Level:
         self.sky.start_color[2] = 255
 
     def plant_collision(self):
-        #check if we have plants
+        # check if we have plants
         if self.soil_layer.plant_sprites:
             for plant in self.soil_layer.plant_sprites.sprites():
-                #checking if the plant can be collect and it collieded with the player
+                # checking if the plant can be collect, and it collided with the player
                 if plant.harvestable and plant.rect.colliderect(self.player.hitbox):
-                    #adding the plan to player inventory
+                    # adding the plan to player inventory
                     self.player_add(plant.plant_type)
                     plant.kill()
-                    #effect when the plan is collected
-                    Particle(plant.rect.topleft,plant.image,self.all_sprites,z= LAYERS['main'])
-                    self.soil_layer.grid[plant.rect.centery// TILE_SIZE][plant.rect.centerx// TILE_SIZE].remove('P')
-
+                    # effect when the plan is collected
+                    Particle(plant.rect.topleft, plant.image, self.all_sprites, z=LAYERS['main'])
+                    self.soil_layer.grid[plant.rect.centery // TILE_SIZE][plant.rect.centerx // TILE_SIZE].remove('P')
 
 
 # camera class

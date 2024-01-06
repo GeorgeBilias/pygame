@@ -5,11 +5,12 @@ from timer import Timer
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites,cow_sprites, interaction, soil_layer, toggle_shop):
+    def __init__(self, pos, group, collision_sprites, tree_sprites, cow_sprites, interaction, soil_layer, toggle_shop):
         super().__init__(group)
 
         self.fatigue = 0
-        self.hunger = 100 # max is 100
+        self.hunger = 100  # max is 100
+        self.health = 100  # max is 100
         self.tired = 0  # not tired
         self.animations = {}  # create a directory for animations
         self.import_assets()  # run the function to import the assets
@@ -37,8 +38,8 @@ class Player(pygame.sprite.Sprite):
             'tool use': Timer(350, self.use_tool),  # timer for using a tool
             'tool switch': Timer(200),  # add a timer to not go out of range
             'seed use': Timer(300, self.use_seed),  # timer for using a seed
-            'seed switch': Timer(180)  # add a timer to not go out of range
-
+            'seed switch': Timer(180),  # add a timer to not go out of range
+            'health_decrease': Timer(5000, self.decrease_health)  # Initialize health decrease timer
         }
 
         # tools
@@ -60,9 +61,13 @@ class Player(pygame.sprite.Sprite):
 
         self.seed_inventory = {
             'corn': 5,
-            'tomato':5
+            'tomato': 5
 
         }
+
+        self.sword_lvl = 1
+        self.axe_lvl = 1
+
         self.money = 200
 
         # interaction
@@ -73,7 +78,7 @@ class Player(pygame.sprite.Sprite):
         self.soil_layer = soil_layer
         self.toggle_shop = toggle_shop
 
-        #water sound
+        # water sound
         self.water = pygame.mixer.Sound('Animations_stolen/Animations/audio/water.mp3')
         self.water.set_volume(0.2)
 
@@ -81,20 +86,24 @@ class Player(pygame.sprite.Sprite):
         self.full_steak_img = pygame.image.load("Animations_stolen/Animations/graphics/hunger/full.png")
         self.empty_steak_img = pygame.image.load("Animations_stolen/Animations/graphics/hunger/empty.png")
 
+        # health images
+        self.full_heart_img = pygame.image.load("Animations_stolen/Animations/graphics/health/full_heart.png")
+        self.empty_heart_img = pygame.image.load("Animations_stolen/Animations/graphics/health/empty_heart.png")
+
     def use_tool(self):  # function for using tool
-        print("tool use")
         if self.selected_tool == 'hoe':
             self.soil_layer.get_hit(self.target_pos)  # hit ground with hoe
 
         if self.selected_tool == 'axe':
             for tree in self.tree_sprites.sprites():
                 if tree.rect.collidepoint(self.target_pos):  # if the axe is colliding with tree
-                    tree.damage()
-        if self.selected_tool == 'sword':
+                    tree.damage(self.axe_lvl)
+        if (self.selected_tool == 'sword' or self.selected_tool == 'sword1' or self.selected_tool == 'sword2' or
+                self.selected_tool == 'sword3' or self.selected_tool == 'sword4' or self.selected_tool == 'sword5'):
+
             for cow in self.cow_sprites.sprites():
                 if cow.rect.collidepoint(self.target_pos):
-                    cow.damage()
-                    
+                    cow.damage(self.sword_lvl)
 
         if self.selected_tool == 'water':
             self.soil_layer.water(self.target_pos)
@@ -105,18 +114,27 @@ class Player(pygame.sprite.Sprite):
 
     def use_seed(self):  # function for using tool
         # print(self.selected_tool) # just a print for now
-        if self.seed_inventory[self.selected_seed] >0:
-            self.soil_layer.plant_seed(self.target_pos,self.selected_seed)
-            self.seed_inventory[self.selected_seed] - 1
+        if self.seed_inventory[self.selected_seed] > 0:
+            self.soil_layer.plant_seed(self.target_pos, self.selected_seed)
+            self.seed_inventory[self.selected_seed] = self.seed_inventory[self.selected_seed] - 1
 
     def import_assets(self):
         # adding player states
-        self.animations = {'up': [], 'down': [], 'left': [], 'right': [], 'right_idle': [],
-                           'left_idle': [], 'up_idle': [], 'down_idle': [], 'right_hoe': [],
-                           'left_hoe': [], 'up_hoe': [], 'down_hoe': [], 'right_axe': [],
-                           'left_axe': [], 'up_axe': [], 'down_axe': [], 'right_water': [],
-                           'left_water': [], 'up_water': [], 'down_water': [], 'left_sword': [],
-                           'right_sword': [],'up_sword': [],'down_sword': []}
+        self.animations = {'up': [], 'down': [], 'left': [], 'right': [],
+                           'right_idle': [], 'left_idle': [], 'up_idle': [], 'down_idle': [],
+                           'right_hoe': [], 'left_hoe': [], 'up_hoe': [], 'down_hoe': [],
+                           'right_axe': [], 'left_axe': [], 'up_axe': [], 'down_axe': [],
+                           'right_axe2': [], 'left_axe2': [], 'up_axe2': [], 'down_axe2': [],
+                           'right_axe3': [], 'left_axe3': [], 'up_axe3': [], 'down_axe3': [],
+                           'right_axe4': [], 'left_axe4': [], 'up_axe4': [], 'down_axe4': [],
+                           'right_axe5': [], 'left_axe5': [], 'up_axe5': [], 'down_axe5': [],
+                           'right_water': [], 'left_water': [], 'up_water': [], 'down_water': [],
+                           'left_sword': [], 'up_sword': [], 'down_sword': [], 'right_sword': [],
+                           'left_sword1': [], 'up_sword1': [], 'down_sword1': [], 'right_sword1': [],
+                           'left_sword2': [], 'up_sword2': [], 'down_sword2': [], 'right_sword2': [],
+                           'left_sword3': [], 'up_sword3': [], 'down_sword3': [], 'right_sword3': [],
+                           'left_sword4': [], 'up_sword4': [], 'down_sword4': [], 'right_sword4': [],
+                           'left_sword5': [], 'up_sword5': [], 'down_sword5': [], 'right_sword5': []}
 
         for animation in self.animations.keys():
             full_path = 'Animations_stolen/Animations/graphics/character/' + animation  # path of animations
@@ -124,7 +142,6 @@ class Player(pygame.sprite.Sprite):
 
     def animate(self, dt):
         self.frame_index += 4 * dt  # use dt to iterate through phases
-        print(self.animations[self.status])
         if self.frame_index >= len(self.animations[self.status]):  # if the animation counter is over the limit
             self.frame_index = 0  # back to the beginning to the animation 1 -> 2 -> 3 -> 4 for example
 
@@ -148,12 +165,12 @@ class Player(pygame.sprite.Sprite):
                 self.direction.y = -1  # set the direction to up
                 self.status = 'up'
                 self.remove_hunger(0.01)
-                print(self.hunger)
+
             elif keys[pygame.K_s]:  # pressing the s button to go down
                 self.direction.y = 1  # set the direction to down
                 self.status = 'down'
                 self.remove_hunger(0.01)
-                print(self.hunger)
+
             else:
                 self.direction.y = 0  # user stopped pressing key therefore player doesn't move anymore vertically
 
@@ -162,20 +179,18 @@ class Player(pygame.sprite.Sprite):
                 self.direction.x = -1  # setting direction to go left
                 self.status = 'left'
                 self.remove_hunger(0.01)
-                print(self.hunger)
+
             elif keys[pygame.K_d]:  # pressing the d button to go right
                 self.direction.x = 1  # setting direction to go right
                 self.status = 'right'
                 self.remove_hunger(0.01)
-                print(self.hunger)
+
             else:
                 self.direction.x = 0  # user stopped pressing key therefore player doesn't move anymore horizontal
 
             if keys[pygame.K_LSHIFT] and (keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[
                 pygame.K_d]):
                 self.remove_hunger(0.1)
-                print(self.hunger)
-
 
             # sprinting
             if keys[pygame.K_LSHIFT] and self.hunger > 20:
@@ -253,7 +268,10 @@ class Player(pygame.sprite.Sprite):
         if self.timers['tool use'].active:
             self.status = self.status.split('_')[
                               0] + '_' + self.selected_tool  # set the right direction and tool for animation
-
+            if self.sword_lvl > 1 and self.selected_tool == 'sword':
+                self.status = self.status + str(self.sword_lvl)
+            if self.axe_lvl > 1 and self.selected_tool == 'axe':
+                self.status = self.status + str(self.axe_lvl)
             # TODO maybe add animation for seed planting
 
     def update_timers(self):  # update timers continuously
@@ -264,18 +282,20 @@ class Player(pygame.sprite.Sprite):
         for sprite in self.collision_sprites.sprites():
             if hasattr(sprite, 'hitbox'):  # check collision
                 if sprite.hitbox.colliderect(self.hitbox):  # check for overlap
-                    if direction == 'horizontal':  # check collision when moving horizontaly
+                    if direction == 'horizontal':  # check collision when moving horizontally
                         if self.direction.x > 0:  # moving right
                             self.hitbox.right = sprite.hitbox.left
                         if self.direction.x < 0:  # moving left
                             self.hitbox.left = sprite.hitbox.right
-                        self.rect.centerx = self.hitbox.centerx  # updating rect of player (where he appears on screen , for example behind flower)
+                        self.rect.centerx = self.hitbox.centerx  # updating rect of player (where he appears on
+                        # screen , for example behind flower
                         self.pos.x = self.hitbox.centerx
 
                     # !! EXPLANATION !! , if player is coming towards a flower from the left and his right sprite
-                    # collides with left sprite of flower make the players position on the left of the flower , vice verca with the other side and vertically
+                    # collides with left sprite of flower make the players position on the left of the flower ,
+                    # vice versa with the other side and vertically
 
-                    if direction == 'vertical':  # check collision when moving verticaly
+                    if direction == 'vertical':  # check collision when moving vertically
                         if self.direction.y > 0:  # moving down
                             self.hitbox.bottom = sprite.hitbox.top
                         if self.direction.y < 0:  # moving up
@@ -303,7 +323,7 @@ class Player(pygame.sprite.Sprite):
         self.collision('vertical')  # check for collision after each movement (vertical)
 
     def add_hunger_pig(self):
-        if self.hunger <100 :
+        if self.hunger < 100:
             self.hunger += 10
             print("fed player")
 
@@ -318,13 +338,12 @@ class Player(pygame.sprite.Sprite):
     def remove_hunger(self, amount):
         if self.hunger - amount >= 0:
             self.hunger -= amount
-            print("removed hunger")
 
     def return_hunger(self):
         return self.hunger
-    
-    def draw_hunger_indicator(self,hunger_level):
-        x, y = SCREEN_WIDTH - 100, 10  # Top right corner
+
+    def draw_hunger_indicator(self, hunger_level):
+        x, y = SCREEN_WIDTH - 100, 45  # Top right corner
         steak_size = 0.01  # Size of each steak icon
         spacing = 40  # Spacing between steak icons
         screen = pygame.display.get_surface()
@@ -334,6 +353,95 @@ class Player(pygame.sprite.Sprite):
             screen.blit(steak_surface, (x, y))
             x -= steak_size + spacing
 
+    def draw_health_indicator(self, health_level):
+        x, y = SCREEN_WIDTH - 100, 10  # Top right corner
+        heart_size = 0.01  # Size of each steak icon
+        spacing = 40  # Spacing between steak icons
+        screen = pygame.display.get_surface()
+
+        for i in range(10):
+            heart_surface = self.full_heart_img if i < health_level // 10 else self.empty_heart_img
+            screen.blit(heart_surface, (x, y))
+            x -= heart_size + spacing
+
+    def decrease_health(self):
+        # Decrease health by 5 points
+        if self.health >= 5:
+            self.health -= 5
+            print("Health decreased by 5")
+        else:
+            # If health drops below 5, stop the timer
+            self.timers['health_decrease'].deactivate()
+
+    def game_over(self):
+        # Load game over image and play sound
+        game_over_image = pygame.image.load("Animations_stolen/Animations/graphics/game_over/wasted.png")
+        game_over_rect = game_over_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+
+        # Display game over image
+        pygame.display.get_surface().blit(game_over_image, game_over_rect)
+
+        # Update the display
+        pygame.display.flip()
+
+        # Play game over sound
+        game_over_sound = pygame.mixer.Sound("Animations_stolen/Animations/audio/wasted.mp3")
+        game_over_sound.play()
+
+        # Wait for a few seconds before quitting the game
+        pygame.time.delay(5000)
+
+        # Display a button to remove the game over image
+        button_image = pygame.image.load("Animations_stolen/Animations/graphics/game_over/respawn.png")
+        button_rect = button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100))
+
+        # Display button image
+        pygame.display.get_surface().blit(button_image, button_rect)
+
+        # Update the display
+        pygame.display.flip()
+
+        # Wait for a button click
+        button_clicked = False
+        while not button_clicked:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    if button_rect.collidepoint(x, y):
+                        button_clicked = True
+
+        # Remove the game over image and button
+        pygame.display.get_surface().fill((0, 0, 0))  # Fill the screen with black to remove previous images
+        pygame.display.flip()
+
+        # Reset player health and hunger
+        self.health = 100
+        self.hunger = 100
+
+        # inventory
+        self.item_inventory = {
+            'wood': 0,
+            'apple': 0,
+            'corn': 0,
+            'tomato': 0
+        }
+
+        self.seed_inventory = {
+            'corn': 5,
+            'tomato': 5
+
+        }
+
+        if self.money - 100 < 0:
+            self.money = 0
+        else:
+            self.money -= 100
+
+        self.pos = pygame.math.Vector2(4601, 1036)
+
     def update(self, dt):  # update player input to the screen
         self.input()
         self.get_status()
@@ -341,4 +449,17 @@ class Player(pygame.sprite.Sprite):
         self.get_target_()
         self.animate(dt)
         self.update_timers()
+
+        # Check if hunger is under 5
+        if self.hunger < 5:
+            # Activate timer to decrease health every 5 seconds
+            if not self.timers['health_decrease'].active:
+                self.timers['health_decrease'] = Timer(5000, self.decrease_health)
+                self.timers['health_decrease'].activate()
+
+        if self.health == 0:
+            print("Game over")
+            self.game_over()
+
         self.draw_hunger_indicator(self.hunger)
+        self.draw_health_indicator(self.health)

@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 from random import randint, choice
+from menu import Menu
 
 from timer import Timer
 
@@ -13,11 +14,13 @@ class Generic(pygame.sprite.Sprite):
         self.z = z
         self.hitbox = self.rect.copy().inflate(-self.rect.width * 0.2, -self.rect.height * 0.7)
 
+
 class Interaction(Generic):
     def __init__(self, pos, size, groups, name):  # interact with the environment class
         surf = pygame.Surface(size)
         super().__init__(pos, surf, groups)
         self.name = name
+
 
 class Water(Generic):
     def __init__(self, pos, frames, groups):
@@ -43,7 +46,7 @@ class Water(Generic):
 class WildFlower(Generic):
     def __init__(self, pos, surf, groups):
         super().__init__(pos, surf, groups)
-        self.hitbox = self.rect.copy().inflate(-20, -self.rect.height*0.9)
+        self.hitbox = self.rect.copy().inflate(-20, -self.rect.height * 0.9)
 
 
 class Particle(Generic):  # create particle effect
@@ -68,12 +71,12 @@ class Tree(Generic):
     def __init__(self, pos, surf, groups, name, player_add):
         super().__init__(pos, surf, groups)
 
-        # tree atributes
+        # tree attributes
         self.health = 5
         self.alive = True
         stump_path = f'Animations_stolen/Animations/graphics/stumps/{"small" if name == "Small" else "large"}.png'
         self.stump_surf = pygame.image.load(stump_path).convert_alpha()
-        #self.invul_timer = Timer(200)
+        # self.invul_timer = Timer(200)
 
         # apples
         self.apples_surf = pygame.image.load('Animations_stolen/Animations/graphics/fruit/apple.png')
@@ -83,13 +86,13 @@ class Tree(Generic):
 
         self.player_add = player_add
 
-        #import sound
+        # import sound
         self.axe_sound = pygame.mixer.Sound('Animations_stolen/Animations/audio/axe.mp3')
 
-    def damage(self):  # method for damaging the tree
-        self.health -= 1  # tree loses health
+    def damage(self, lvl):  # method for damaging the tree
+        self.health -= lvl  # tree loses health
 
-        #sound effect
+        # sound effect
         self.axe_sound.play()
 
         if len(self.apple_sprites.sprites()) > 0:  # check if tree has apples
@@ -102,24 +105,22 @@ class Tree(Generic):
 
             random_apple.kill()
 
-
     def check_death(self):
         if self.health <= 0:
-            Particle(self.rect.topleft,self.image, self.groups()[0],LAYERS['fruit'], 500)
+            Particle(self.rect.topleft, self.image, self.groups()[0], LAYERS['fruit'], 500)
             self.image = self.stump_surf
             self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
             self.hitbox = self.rect.copy().inflate(-10, -self.rect.height * 0.6)
             self.alive = False
-            self.player_add('wood') # give wood after tree is chopped down
+            self.player_add('wood')  # give wood after tree is chopped down
 
-    def update(self,dt):
-        if self.alive :
+    def update(self, dt):
+        if self.alive:
             self.check_death()
 
-
     def create_fruit(self):
-        for pos in self.apple_pos: # spawn apple ins random locations
-            if randint(0, 10) < 2:
+        for pos in self.apple_pos:  # spawn apple ins random locations
+            if randint(0, 10) < 5:
                 print("creating apples")
                 # actual pos of apple from the borders
                 x = pos[0] + self.rect.left
@@ -127,29 +128,28 @@ class Tree(Generic):
                 Generic((x, y), self.apples_surf, [self.apple_sprites, self.groups()[0]], LAYERS['fruit'])
 
 
-
 class Cow(Generic):
     def __init__(self, pos, surf, groups, name, feed_player):
         super().__init__(pos, surf, groups)
 
-        # tree atributes
+        # tree attributes
         self.health = 5
         self.alive = True
 
         self.feed_player = feed_player
 
-        #import sound
+        # import sound
         self.cow_hurt = pygame.mixer.Sound('Animations_stolen/Animations/audio/cow_hurt.mp3')
         self.cow_dead = pygame.mixer.Sound('Animations_stolen/Animations/audio/cow_death.mp3')
         self.cow_hurt.set_volume(0.3)
-        self.rect.inflate_ip(+self.rect.width*1.3, +self.rect.height*1.3)
+        self.rect.inflate_ip(+self.rect.width * 1.3, +self.rect.height * 1.3)
         self.image = pygame.transform.scale(self.image, (70, 70))
 
+    def damage(self, lvl):  # method for damaging the tree
 
-    def damage(self):  # method for damaging the tree
-        self.health -= 1  # tree loses health
+        self.health -= lvl  # cow loses health
 
-        #sound effect
+        # sound effect
         self.cow_hurt.play()
 
         print("damaged")
@@ -162,7 +162,6 @@ class Cow(Generic):
             self.alive = False
             self.kill()
 
-    def update(self,dt):
-        if self.alive :
+    def update(self, dt):
+        if self.alive:
             self.check_death()
-

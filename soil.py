@@ -12,6 +12,7 @@ class SoilTile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.z = LAYERS['soil']
 
+
 class WaterTile(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups):
         super().__init__(groups)
@@ -19,57 +20,57 @@ class WaterTile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.z = LAYERS['soil water']
 
+
 class Plant(pygame.sprite.Sprite):
-    def __init__(self,plant_type, groups, soil,check_watered):
+    def __init__(self, plant_type, groups, soil, check_watered):
         super().__init__(groups)
-        #setup the plan
+        # set up the plan
         self.grow_speed = GROW_SPEED[plant_type]
         self.plant_type = plant_type
         self.frames = import_folder(f'Animations_stolen/Animations/graphics/fruit/{plant_type}')
         self.soil = soil
         self.check_watered = check_watered
-        #plant age and growing speed
+        # plant age and growing speed
         self.age = 0
-        self.max_age = len(self.frames)-1
+        self.max_age = len(self.frames) - 1
         self.grow_speed: GROW_SPEED[plant_type]
 
         self.harvestable = False
 
-        #sprite setup
+        # sprite setup
         self.image = self.frames[self.age]
         if plant_type == 'corn':
             self.y_offset = -16
         else:
             self.y_offset = -8
-        self.rect = self.image.get_rect(midbottom = soil.rect.midbottom + pygame.math.Vector2(0,self.y_offset))
+        self.rect = self.image.get_rect(midbottom=soil.rect.midbottom + pygame.math.Vector2(0, self.y_offset))
         self.z = LAYERS['ground plant']
 
     def grow(self):
         if self.check_watered(self.rect.center):
 
-            #if the plant age > 0 the plan should be in the main layer
+            # if the plant age > 0 the plan should be in the main layer
 
-            if int(self.age) >0:
+            if int(self.age) > 0:
                 self.z = LAYERS['main']
-                #seting a hitbox so collision will work on the plans
-                self.hitbox = self.rect.copy().inflate(-26,-self.rect.height*0.4)
+                # setting a hitbox so collision will work on the plans
+                self.hitbox = self.rect.copy().inflate(-26, -self.rect.height * 0.4)
             self.age += self.grow_speed
-            #check if the plan is reaching max age
+            # check if the plan is reaching max age
             if self.age >= self.max_age:
                 self.age = self.max_age
                 self.harvestable = True
 
             self.image = self.frames[int(self.age)]
-            self.rect = self.image.get_rect(midbottom=self.soil.rect.midbottom + pygame.math.Vector2(0,self.y_offset))
-
+            self.rect = self.image.get_rect(midbottom=self.soil.rect.midbottom + pygame.math.Vector2(0, self.y_offset))
 
 
 class SoilLayer:
-    def __init__(self, all_sprites,collision_sprites):
+    def __init__(self, all_sprites, collision_sprites):
 
         # sprite groups
         self.all_sprites = all_sprites
-        self.collision_sprites =collision_sprites
+        self.collision_sprites = collision_sprites
         self.soil_sprites = pygame.sprite.Group()
         self.water_sprites = pygame.sprite.Group()
         self.plant_sprites = pygame.sprite.Group()
@@ -87,7 +88,7 @@ class SoilLayer:
         # if the soil has been watered
         # if soil has a plant already or not
 
-        #sounds
+        # sounds
         self.hoe_sound = pygame.mixer.Sound('Animations_stolen/Animations/audio/hoe.wav')
         self.hoe_sound.set_volume(0.4)
 
@@ -133,7 +134,6 @@ class SoilLayer:
     def water(self, target_pos):
         for soil_sprite in self.soil_sprites.sprites():
             if soil_sprite.rect.collidepoint(target_pos):
-
                 # adding entry to soil grid -> 'W'
 
                 x = soil_sprite.rect.x // TILE_SIZE
@@ -141,7 +141,7 @@ class SoilLayer:
                 self.grid[y][x].append('W')
 
                 # creating water sprite
-                WaterTile(soil_sprite.rect.topleft,choice(self.water_surfs), [self.all_sprites, self.water_sprites])
+                WaterTile(soil_sprite.rect.topleft, choice(self.water_surfs), [self.all_sprites, self.water_sprites])
 
     def water_all(self):
         for index_row, row in enumerate(self.grid):
@@ -166,14 +166,15 @@ class SoilLayer:
                 if 'W' in cell:
                     cell.remove('W')
 
-    #we need to check if the plans are getting water
-    def check_watered(self,pos):
+    # we need to check if the plans are getting water
+    def check_watered(self, pos):
         x = pos[0] // TILE_SIZE
         y = pos[1] // TILE_SIZE
         cell = self.grid[y][x]
         is_watered = 'W' in cell
-        return  is_watered
-    def plant_seed(self,target_pos,seed):
+        return is_watered
+
+    def plant_seed(self, target_pos, seed):
         for soil_sprite in self.soil_sprites.sprites():
             if soil_sprite.rect.collidepoint(target_pos):
                 self.plant_sound.play()
@@ -182,10 +183,13 @@ class SoilLayer:
                 y = soil_sprite.rect.y // TILE_SIZE
                 if 'P' not in self.grid[y][x]:
                     self.grid[y][x].append('P')
-                    Plant(seed,[self.all_sprites, self.plant_sprites,self.collision_sprites],soil_sprite,self.check_watered)
+                    Plant(seed, [self.all_sprites, self.plant_sprites, self.collision_sprites], soil_sprite,
+                          self.check_watered)
+
     def update_plants(self):
         for plant in self.plant_sprites.sprites():
             plant.grow()
+
     def create_soil_tiles(self):
         self.soil_sprites.empty()
         for index_row, row in enumerate(self.grid):  # enumerate helps us keep track which row we are on
@@ -203,7 +207,7 @@ class SoilLayer:
                     # if statements to check neighbour soil to decide the right png
 
                     # all sides
-                    if all((t, b, r, l)) : tile_type = 'x'
+                    if all((t, b, r, l)): tile_type = 'x'
 
                     # horizontal tiles only
                     if l and not any((t, r, b)):
@@ -215,7 +219,7 @@ class SoilLayer:
 
                     # vertical tiles only
 
-                    if t and not any((r,l,b)):
+                    if t and not any((r, l, b)):
                         tile_type = 'b'
                     if b and not any((r, l, t)):
                         tile_type = 't'
@@ -239,9 +243,6 @@ class SoilLayer:
                     if all((t, b, l)) and not r: tile_type = 'tbl'
                     if all((l, r, t)) and not b: tile_type = 'lrb'
                     if all((l, r, b)) and not t: tile_type = 'lrt'
-
-
-
 
                     SoilTile((index_col * TILE_SIZE, index_row * TILE_SIZE), self.soil_surfs[tile_type],
                              [self.all_sprites, self.soil_sprites])
