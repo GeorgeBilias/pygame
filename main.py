@@ -69,6 +69,12 @@ if __name__ == "__main__":
         # Add an image as a background
         screen.blit(pygame.image.load("Animations_stolen/Animations/background.png"), (0, 0))
 
+        # Display the title
+        font = pygame.font.Font('font/LycheeSoda.ttf', 120)
+
+        title = font.render("PixelTerra", True, (109,109,109))
+        title_rect = title.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 100))
+        screen.blit(title, title_rect)
 
         # Display the buttons
         screen.blit(start_button_image, start_button_rect)
