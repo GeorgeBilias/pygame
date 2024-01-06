@@ -69,6 +69,7 @@ if __name__ == "__main__":
         # Add an image as a background
         screen.blit(pygame.image.load("Animations_stolen/Animations/background.png"), (0, 0))
 
+
         # Display the buttons
         screen.blit(start_button_image, start_button_rect)
         screen.blit(exit_button_image, exit_button_rect)
