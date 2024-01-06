@@ -25,6 +25,9 @@ class Level:
         self.collision_sprites = pygame.sprite.Group()
         self.tree_sprites = pygame.sprite.Group()
         self.cow_sprites = pygame.sprite.Group()
+        self.chicken_sprites = pygame.sprite.Group()
+        self.pig_sprites = pygame.sprite.Group()
+        self.buffallo_sprites = pygame.sprite.Group()
         self.interaction_sprites = pygame.sprite.Group()
         self.soil_layer = SoilLayer(self.all_sprites, self.collision_sprites)
 
@@ -86,6 +89,21 @@ class Level:
         for obj in tmx_data.get_layer_by_name('Cows'):
             Cow((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites], obj.name,
                 self.feed_player)
+            
+        # chicken
+        for obj in tmx_data.get_layer_by_name('Chickens'):
+            Chicken((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites], obj.name,
+                self.feed_player)
+            
+        # pigs
+        for obj in tmx_data.get_layer_by_name('Pigs'):
+            Pig((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites], obj.name,
+                self.feed_player)
+            
+        # buffallos
+        for obj in tmx_data.get_layer_by_name('Buffallos'):
+            Buffallo((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites], obj.name,
+                self.feed_player)
 
         # collision tiles
         for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():  # USING SET COLLISIONS FOR MAP MADE IN TILED
@@ -95,7 +113,7 @@ class Level:
         for obj in tmx_data.get_layer_by_name('Player'):
             if obj.name == 'Start':
                 self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites, self.tree_sprites,
-                                     self.cow_sprites,
+                                     self.cow_sprites,self.chicken_sprites, self.pig_sprites,self.buffallo_sprites,
                                      self.interaction_sprites, self.soil_layer, self.toggle_shop)  # initialising player
 
             if obj.name == 'Bed':  # creating area to sleep
@@ -115,6 +133,18 @@ class Level:
     def feed_player(self, animal):
         if animal == "Cow":
             self.player.add_hunger_cow()
+            # fed player
+            print(self.player.hunger)
+        if animal == "Chicken":
+            self.player.add_hunger_chicken()
+            # fed player
+            print(self.player.hunger)
+        if animal == "Pig":
+            self.player.add_hunger_pig()
+            # fed player
+            print(self.player.hunger)
+        if animal == "Buffallo":
+            self.player.add_hunger_buffallo()
             # fed player
             print(self.player.hunger)
 

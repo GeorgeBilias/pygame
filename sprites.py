@@ -165,3 +165,121 @@ class Cow(Generic):
     def update(self, dt):
         if self.alive:
             self.check_death()
+
+class Chicken(Generic):
+    def __init__(self, pos, surf, groups, name, feed_player):
+        super().__init__(pos, surf, groups)
+
+        # tree attributes
+        self.health = 5
+        self.alive = True
+
+        self.feed_player = feed_player
+
+        # import sound
+        self.chicken_hurt = pygame.mixer.Sound('Animations_stolen/Animations/audio/chicken_hurt.mp3')
+        self.chicken_dead = pygame.mixer.Sound('Animations_stolen/Animations/audio/chicken_dead.mp3')
+        self.chicken_hurt.set_volume(0.3)
+        self.rect.inflate_ip(+self.rect.width * 1.3, +self.rect.height * 1.3)
+        self.image = pygame.transform.scale(self.image, (70, 70))
+
+    def damage(self, lvl):  # method for damaging the tree
+
+        self.health -= lvl  # cow loses health
+
+        # sound effect
+        self.chicken_hurt.play()
+
+        print("damaged")
+
+    def check_death(self):
+        if self.health <= 0:
+            self.chicken_dead.play()
+            self.feed_player("Chicken")
+            print("dead")
+            self.alive = False
+            self.kill()
+
+    def update(self, dt):
+        if self.alive:
+            self.check_death()
+
+class Pig(Generic):
+    def __init__(self, pos, surf, groups, name, feed_player):
+        super().__init__(pos, surf, groups)
+
+        # tree attributes
+        self.health = 5
+        self.alive = True
+
+        self.feed_player = feed_player
+
+        # import sound
+        self.pig_hurt = pygame.mixer.Sound('Animations_stolen/Animations/audio/pig_hurt.mp3')
+        self.pig_dead = pygame.mixer.Sound('Animations_stolen/Animations/audio/pig_dead.mp3')
+        self.pig_hurt.set_volume(0.3)
+        self.rect.inflate_ip(+self.rect.width * 1.3, +self.rect.height * 1.3)
+        self.image = pygame.transform.scale(self.image, (70, 70))
+
+    def damage(self, lvl):  # method for damaging the tree
+
+        self.health -= lvl  # cow loses health
+
+        # sound effect
+        self.pig_hurt.play()
+
+        print("damaged")
+
+    def check_death(self):
+        if self.health <= 0:
+            self.pig_dead.play()
+            self.feed_player("Pig")
+            print("dead")
+            self.alive = False
+            self.kill()
+
+    def update(self, dt):
+        if self.alive:
+            self.check_death()
+
+
+class Buffallo(Generic):
+    def __init__(self, pos, surf, groups, name, feed_player):
+        super().__init__(pos, surf, groups)
+
+        # tree attributes
+        self.health = 5
+        self.alive = True
+
+        self.feed_player = feed_player
+
+        # import sound
+        self.buffallo_hurt = pygame.mixer.Sound('Animations_stolen/Animations/audio/buffallo_hurt.mp3')
+        self.buffallo_dead = pygame.mixer.Sound('Animations_stolen/Animations/audio/buffallo_dead.mp3')
+        self.buffallo_hurt.set_volume(0.3)
+        self.rect.inflate_ip(+self.rect.width * 1.3, +self.rect.height * 1.3)
+        self.image = pygame.transform.scale(self.image, (70, 70))
+
+    def damage(self, lvl):  # method for damaging the tree
+
+        self.health -= lvl  # cow loses health
+
+        # sound effect
+        self.buffallo_hurt.play()
+
+        print("damaged")
+
+    def check_death(self):
+        if self.health <= 0:
+            self.buffallo_dead.play()
+            self.feed_player("Buffallo")
+            print("dead")
+            self.alive = False
+            self.kill()
+
+    def update(self, dt):
+        if self.alive:
+            self.check_death()
+
+
+

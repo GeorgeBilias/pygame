@@ -7,7 +7,7 @@ from timer import Timer
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites, cow_sprites, interaction, soil_layer, toggle_shop):
+    def __init__(self, pos, group, collision_sprites, tree_sprites, cow_sprites,chicken_sprites,pig_sprites,buffallo_sprites, interaction, soil_layer, toggle_shop):
         super().__init__(group)
 
         self.fatigue = 0
@@ -71,7 +71,7 @@ class Player(pygame.sprite.Sprite):
         self.sword_lvl = 1
         self.axe_lvl = 1
 
-        self.money = 0
+        self.money = 1000
 
         # interaction
         self.tree_sprites = tree_sprites
@@ -107,6 +107,20 @@ class Player(pygame.sprite.Sprite):
             for cow in self.cow_sprites.sprites():
                 if cow.rect.collidepoint(self.target_pos):
                     cow.damage(self.sword_lvl)
+
+            for chicken in self.cow_sprites.sprites():
+                if chicken.rect.collidepoint(self.target_pos):
+                    chicken.damage(self.sword_lvl)
+
+            for pig in self.cow_sprites.sprites():
+                if pig.rect.collidepoint(self.target_pos):
+                    pig.damage(self.sword_lvl)
+
+            for buffallo in self.cow_sprites.sprites():
+                if buffallo.rect.collidepoint(self.target_pos):
+                    buffallo.damage(self.sword_lvl)
+
+            
 
         if self.selected_tool == 'water':
             self.soil_layer.water(self.target_pos)
@@ -371,6 +385,10 @@ class Player(pygame.sprite.Sprite):
     def add_hunger_chicken(self):
         if self.hunger < 100:
             self.hunger += 8
+
+    def add_hunger_buffallo(self):
+        if self.hunger < 100:
+            self.hunger += 40
 
     def remove_hunger(self, amount):
         if self.hunger - amount >= 0:
