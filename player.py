@@ -68,7 +68,7 @@ class Player(pygame.sprite.Sprite):
         self.sword_lvl = 1
         self.axe_lvl = 1
 
-        self.money = 200
+        self.money = 0
 
         # interaction
         self.tree_sprites = tree_sprites
@@ -397,13 +397,14 @@ class Player(pygame.sprite.Sprite):
 
         # Display button image
         pygame.display.get_surface().blit(button_image, button_rect)
-
-        pygame.time.delay(5000)
-        easter_egg_sound = pygame.mixer.Sound("Animations_stolen/Animations/audio/easter_egg.mp3")
-        easter_egg_sound.play()
-
         # Update the display
         pygame.display.flip()
+
+        # Easter egg
+
+        if self.axe_lvl == 5 and self.sword_lvl == 3:
+            easter_egg_sound = pygame.mixer.Sound("Animations_stolen/Animations/audio/easter_egg.mp3")
+            easter_egg_sound.play()
 
         # Wait for a button click
         button_clicked = False
