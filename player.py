@@ -339,6 +339,9 @@ class Player(pygame.sprite.Sprite):
                     self.status = self.status + str(self.sword_lvl)
                 if self.axe_lvl > 1 and self.selected_tool == 'axe':
                     self.status = self.status + str(self.axe_lvl)
+            else:
+                self.status = self.status.split('_')[
+                                  0] + '_' + self.selected_tool  # set the right direction and tool for animation
                 # TODO maybe add animation for seed planting
 
     def update_timers(self):  # update timers continuously
