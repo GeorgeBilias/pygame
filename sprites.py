@@ -190,7 +190,7 @@ class Chicken(Generic):
 
     def damage(self, lvl):  # method for damaging the tree
 
-        self.health -= lvl  # cow loses health
+        self.health -= lvl  # chicken loses health
 
         # sound effect
         self.chicken_hurt.play()
@@ -228,7 +228,7 @@ class Pig(Generic):
 
     def damage(self, lvl):  # method for damaging the tree
 
-        self.health -= lvl  # cow loses health
+        self.health -= lvl  # pig loses health
 
         # sound effect
         self.pig_hurt.play()
@@ -267,7 +267,7 @@ class Buffallo(Generic):
 
     def damage(self, lvl):  # method for damaging the tree
 
-        self.health -= lvl  # cow loses health
+        self.health -= lvl  # buffallo loses health
 
         # sound effect
         self.buffallo_hurt.play()
