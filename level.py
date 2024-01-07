@@ -45,16 +45,16 @@ class Level:
         self.menu = Menu(self.player, self.toggle_shop)
         self.shop_active = False
 
-        self.success = pygame.mixer.Sound('Animations_stolen/Animations/audio/success.wav')
+        self.success = pygame.mixer.Sound('Animations/Animations/audio/success.wav')
         self.success.set_volume(0.2)
 
-        self.music = pygame.mixer.Sound('Animations_stolen/Animations/audio/music.mp3')
+        self.music = pygame.mixer.Sound('Animations/Animations/audio/music.mp3')
         self.music.play(loops=-1)
         self.music.set_volume(0.1)
 
     def setup(self):
 
-        tmx_data = load_pygame('Animations_stolen/Animations/data/map.tmx')  # loading tmx file
+        tmx_data = load_pygame('Animations/Animations/data/map.tmx')  # loading tmx file
 
         # house
         for layer in ['HouseFloor', 'HouseFurnitureBottom']:
@@ -71,7 +71,7 @@ class Level:
             Generic(pos=(x * TILE_SIZE, y * TILE_SIZE), surf=surface, groups=[self.all_sprites, self.collision_sprites])
 
         # water
-        water_frames = import_folder('Animations_stolen/Animations/graphics/water')  # importing water frames
+        water_frames = import_folder('Animations/Animations/graphics/water')  # importing water frames
         for x, y, surface in tmx_data.get_layer_by_name('Water').tiles():
             Water((x * TILE_SIZE, y * TILE_SIZE), water_frames, self.all_sprites)  # adding water
 
@@ -125,7 +125,7 @@ class Level:
                 Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
         Generic(pos=(0, 0),
-                surf=pygame.image.load('Animations_stolen/Animations/graphics/world/ground.png').convert_alpha(),
+                surf=pygame.image.load('Animations/Animations/graphics/world/ground.png').convert_alpha(),
                 groups=self.all_sprites, z=LAYERS['ground'])  # adding ground
 
     def player_add(self, item):  # add item to inventory after some action
@@ -224,7 +224,7 @@ class Level:
     def reset(self):
 
         # respawn animals
-        self.respawn_animals(load_pygame('Animations_stolen/Animations/data/map.tmx'))
+        self.respawn_animals(load_pygame('Animations/Animations/data/map.tmx'))
 
         # reset player health
         self.player.health = 100

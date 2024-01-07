@@ -39,7 +39,7 @@ if __name__ == "__main__":
     pygame.display.set_caption("Start Menu")
 
     # Load and scale the start button image
-    start_button_image = pygame.image.load("Animations_stolen/Animations/start_button.png")
+    start_button_image = pygame.image.load("Animations/Animations/start_button.png")
     new_button_width, new_button_height = 200, 50
     start_button_image = pygame.transform.scale(start_button_image, (new_button_width, new_button_height))
 
@@ -47,12 +47,12 @@ if __name__ == "__main__":
     start_button_rect = start_button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100))
 
     # Load and scale the exit button image
-    exit_button_image = pygame.image.load("Animations_stolen/Animations/exit_button.png")
+    exit_button_image = pygame.image.load("Animations/Animations/exit_button.png")
     exit_button_image = pygame.transform.scale(exit_button_image, (new_button_width, new_button_height))
     exit_button_rect = exit_button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 170))
 
     # Load your MP3 file
-    pygame.mixer.music.load("Animations_stolen/Animations/audio/main_menu.mp3")
+    pygame.mixer.music.load("Animations/Animations/audio/main_menu.mp3")
 
     # Set the end event to restart the music when it finishes
     pygame.mixer.music.set_endevent(pygame.USEREVENT)
@@ -83,16 +83,16 @@ if __name__ == "__main__":
                     sys.exit()
 
         # Add an image as a background
-        screen.blit(pygame.image.load("Animations_stolen/Animations/background.png"), (0, 0))
+        screen.blit(pygame.image.load("Animations/Animations/background.png"), (0, 0))
 
         # Display the title
 
-        title = pygame.image.load("Animations_stolen/Animations/title.png")
+        title = pygame.image.load("Animations/Animations/title.png")
         title = pygame.transform.scale(title, (SCREEN_WIDTH, SCREEN_HEIGHT-300))
         screen.blit(title, (0, 0))
 
         # display the keyboard
-        keyboard = pygame.image.load("Animations_stolen/Animations/keyboard.png")
+        keyboard = pygame.image.load("Animations/Animations/keyboard.png")
         keyboard = pygame.transform.scale(keyboard, (250, 90))
         # at bottom right
         screen.blit(keyboard, (SCREEN_WIDTH-250, SCREEN_HEIGHT-90))

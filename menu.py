@@ -37,7 +37,7 @@ class Menu:
         self.index = 0
         self.timer = Timer(200)
 
-        self.upgrde_sound = pygame.mixer.Sound("Animations_stolen/Animations/audio/upgrade.mp3")
+        self.upgrde_sound = pygame.mixer.Sound("Animations/Animations/audio/upgrade.mp3")
 
 
     def display_money(self):

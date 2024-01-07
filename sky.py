@@ -35,12 +35,12 @@ class Rain:  # rain class that uses drop
     def __init__(self, all_sprites):
         self.all_sprites = all_sprites
         # import folder of rain drops
-        self.rain_drops = import_folder('Animations_stolen/Animations/graphics/rain/drops')
+        self.rain_drops = import_folder('Animations/Animations/graphics/rain/drops')
         # import folder of rain floor
-        self.rain_floor = import_folder('Animations_stolen/Animations/graphics/rain/floor')
+        self.rain_floor = import_folder('Animations/Animations/graphics/rain/floor')
 
         self.floor_w, self.floor_h = pygame.image.load(
-            'Animations_stolen/Animations/graphics/world/ground.png').get_size()
+            'Animations/Animations/graphics/world/ground.png').get_size()
 
     def create_floor(self):
         # rand choice between different pngs for rain floor

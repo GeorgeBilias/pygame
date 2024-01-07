@@ -76,12 +76,12 @@ class Tree(Generic):
         # tree attributes
         self.health = 5
         self.alive = True
-        stump_path = f'Animations_stolen/Animations/graphics/stumps/{"small" if name == "Small" else "large"}.png'
+        stump_path = f'Animations/Animations/graphics/stumps/{"small" if name == "Small" else "large"}.png'
         self.stump_surf = pygame.image.load(stump_path).convert_alpha()
         # self.invul_timer = Timer(200)
 
         # apples
-        self.apples_surf = pygame.image.load('Animations_stolen/Animations/graphics/fruit/apple.png')
+        self.apples_surf = pygame.image.load('Animations/Animations/graphics/fruit/apple.png')
         self.apple_pos = APPLE_POS[name]  # possible apple locations from setting.py
         self.apple_sprites = pygame.sprite.Group()
         self.create_fruit()
@@ -89,7 +89,7 @@ class Tree(Generic):
         self.player_add = player_add
 
         # import sound
-        self.axe_sound = pygame.mixer.Sound('Animations_stolen/Animations/audio/axe.mp3')
+        self.axe_sound = pygame.mixer.Sound('Animations/Animations/audio/axe.mp3')
 
     def damage(self, lvl):  # method for damaging the tree
         self.health -= lvl  # tree loses health
@@ -144,8 +144,8 @@ class Cow(Generic):
         self.feed_player = feed_player
 
         # import sound
-        self.cow_hurt = pygame.mixer.Sound('Animations_stolen/Animations/audio/cow_hurt.mp3')
-        self.cow_dead = pygame.mixer.Sound('Animations_stolen/Animations/audio/cow_death.mp3')
+        self.cow_hurt = pygame.mixer.Sound('Animations/Animations/audio/cow_hurt.mp3')
+        self.cow_dead = pygame.mixer.Sound('Animations/Animations/audio/cow_death.mp3')
         self.cow_hurt.set_volume(0.3)
         self.rect.inflate_ip(+self.rect.width * 1.3, +self.rect.height * 1.3)
         self.image = pygame.transform.scale(self.image, (70, 70))
@@ -182,8 +182,8 @@ class Chicken(Generic):
         self.feed_player = feed_player
 
         # import sound
-        self.chicken_hurt = pygame.mixer.Sound('Animations_stolen/Animations/audio/chicken_hurt.mp3')
-        self.chicken_dead = pygame.mixer.Sound('Animations_stolen/Animations/audio/chicken_dead.mp3')
+        self.chicken_hurt = pygame.mixer.Sound('Animations/Animations/audio/chicken_hurt.mp3')
+        self.chicken_dead = pygame.mixer.Sound('Animations/Animations/audio/chicken_dead.mp3')
         self.chicken_hurt.set_volume(0.3)
         self.rect.inflate_ip(+self.rect.width * 1.3, +self.rect.height * 1.3)
         self.image = pygame.transform.scale(self.image, (70, 70))
@@ -220,8 +220,8 @@ class Pig(Generic):
         self.feed_player = feed_player
 
         # import sound
-        self.pig_hurt = pygame.mixer.Sound('Animations_stolen/Animations/audio/pig_hurt.mp3')
-        self.pig_dead = pygame.mixer.Sound('Animations_stolen/Animations/audio/pig_dead.mp3')
+        self.pig_hurt = pygame.mixer.Sound('Animations/Animations/audio/pig_hurt.mp3')
+        self.pig_dead = pygame.mixer.Sound('Animations/Animations/audio/pig_dead.mp3')
         self.pig_hurt.set_volume(0.3)
         self.rect.inflate_ip(+self.rect.width * 1.3, +self.rect.height * 1.3)
         self.image = pygame.transform.scale(self.image, (70, 70))
@@ -259,8 +259,8 @@ class Buffallo(Generic):
         self.feed_player = feed_player
 
         # import sound
-        self.buffallo_hurt = pygame.mixer.Sound('Animations_stolen/Animations/audio/buffallo_hurt.mp3')
-        self.buffallo_dead = pygame.mixer.Sound('Animations_stolen/Animations/audio/buffallo_dead.mp3')
+        self.buffallo_hurt = pygame.mixer.Sound('Animations/Animations/audio/buffallo_hurt.mp3')
+        self.buffallo_dead = pygame.mixer.Sound('Animations/Animations/audio/buffallo_dead.mp3')
         self.buffallo_hurt.set_volume(0.3)
         self.rect.inflate_ip(+self.rect.width * 1.3, +self.rect.height * 1.3)
         self.image = pygame.transform.scale(self.image, (70, 70))

@@ -89,16 +89,16 @@ class Player(pygame.sprite.Sprite):
         self.toggle_shop = toggle_shop
 
         # water sound
-        self.water = pygame.mixer.Sound('Animations_stolen/Animations/audio/water.mp3')
+        self.water = pygame.mixer.Sound('Animations/Animations/audio/water.mp3')
         self.water.set_volume(0.2)
 
         # hunger images
-        self.full_steak_img = pygame.image.load("Animations_stolen/Animations/graphics/hunger/full.png")
-        self.empty_steak_img = pygame.image.load("Animations_stolen/Animations/graphics/hunger/empty.png")
+        self.full_steak_img = pygame.image.load("Animations/Animations/graphics/hunger/full.png")
+        self.empty_steak_img = pygame.image.load("Animations/Animations/graphics/hunger/empty.png")
 
         # health images
-        self.full_heart_img = pygame.image.load("Animations_stolen/Animations/graphics/health/full_heart.png")
-        self.empty_heart_img = pygame.image.load("Animations_stolen/Animations/graphics/health/empty_heart.png")
+        self.full_heart_img = pygame.image.load("Animations/Animations/graphics/health/full_heart.png")
+        self.empty_heart_img = pygame.image.load("Animations/Animations/graphics/health/empty_heart.png")
 
     def use_tool(self):  # function for using tool
         if self.selected_tool == 'hoe':
@@ -167,7 +167,7 @@ class Player(pygame.sprite.Sprite):
                            'left_sword5': [], 'up_sword5': [], 'down_sword5': [], 'right_sword5': []}
 
         for animation in self.animations.keys():
-            full_path = 'Animations_stolen/Animations/graphics/character/' + animation  # path of animations
+            full_path = 'Animations/Animations/graphics/character/' + animation  # path of animations
             self.animations[animation] = import_folder(full_path)  # import the right assets
 
     def animate(self, dt):
@@ -291,7 +291,7 @@ class Player(pygame.sprite.Sprite):
                 if not self.quit_button_displayed:
                     # Display a quit button
                     new_button_width, new_button_height = 200, 50
-                    exit_button_image = pygame.image.load("Animations_stolen/Animations/exit_button.png")
+                    exit_button_image = pygame.image.load("Animations/Animations/exit_button.png")
                     exit_button_image = pygame.transform.scale(exit_button_image, (new_button_width, new_button_height))
                     exit_button_rect = exit_button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
                     pygame.display.get_surface().blit(exit_button_image, exit_button_rect)
@@ -449,7 +449,7 @@ class Player(pygame.sprite.Sprite):
 
     def game_over(self):
         # Load game over image and play sound
-        game_over_image = pygame.image.load("Animations_stolen/Animations/graphics/game_over/wasted.png")
+        game_over_image = pygame.image.load("Animations/Animations/graphics/game_over/wasted.png")
         game_over_rect = game_over_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
 
         # Display game over image
@@ -459,14 +459,14 @@ class Player(pygame.sprite.Sprite):
         pygame.display.flip()
 
         # Play game over sound
-        game_over_sound = pygame.mixer.Sound("Animations_stolen/Animations/audio/wasted.mp3")
+        game_over_sound = pygame.mixer.Sound("Animations/Animations/audio/wasted.mp3")
         game_over_sound.play()
 
         # Wait for a few seconds before quitting the game
         pygame.time.delay(5000)
 
         # Display a button to remove the game over image
-        button_image = pygame.image.load("Animations_stolen/Animations/graphics/game_over/respawn.png")
+        button_image = pygame.image.load("Animations/Animations/graphics/game_over/respawn.png")
         button_rect = button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100))
 
         # Display button image
@@ -477,7 +477,7 @@ class Player(pygame.sprite.Sprite):
         # Easter egg
 
         if self.axe_lvl == 5 and self.sword_lvl == 3:
-            easter_egg_sound = pygame.mixer.Sound("Animations_stolen/Animations/audio/easter_egg.mp3")
+            easter_egg_sound = pygame.mixer.Sound("Animations/Animations/audio/easter_egg.mp3")
             easter_egg_sound.play()
 
         # Wait for a button click

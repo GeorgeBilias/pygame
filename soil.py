@@ -27,7 +27,7 @@ class Plant(pygame.sprite.Sprite):
         # set up the plan
         self.grow_speed = GROW_SPEED[plant_type]
         self.plant_type = plant_type
-        self.frames = import_folder(f'Animations_stolen/Animations/graphics/fruit/{plant_type}')
+        self.frames = import_folder(f'Animations/Animations/graphics/fruit/{plant_type}')
         self.soil = soil
         self.check_watered = check_watered
         # plant age and growing speed
@@ -76,8 +76,8 @@ class SoilLayer:
         self.plant_sprites = pygame.sprite.Group()
 
         # graphics
-        self.soil_surfs = import_folder_dict('Animations_stolen/Animations/graphics/soil/')
-        self.water_surfs = import_folder('Animations_stolen/Animations/graphics/soil_water/')
+        self.soil_surfs = import_folder_dict('Animations/Animations/graphics/soil/')
+        self.water_surfs = import_folder('Animations/Animations/graphics/soil_water/')
         print(self.soil_surfs)
 
         self.create_soil_grid()
@@ -89,20 +89,20 @@ class SoilLayer:
         # if soil has a plant already or not
 
         # sounds
-        self.hoe_sound = pygame.mixer.Sound('Animations_stolen/Animations/audio/hoe.wav')
+        self.hoe_sound = pygame.mixer.Sound('Animations/Animations/audio/hoe.wav')
         self.hoe_sound.set_volume(0.4)
 
-        self.plant_sound = pygame.mixer.Sound('Animations_stolen/Animations/audio/plant.wav')
+        self.plant_sound = pygame.mixer.Sound('Animations/Animations/audio/plant.wav')
         self.plant_sound.set_volume(0.2)
 
     def create_soil_grid(self):  # creating a grid that represents tiles in the map to manage the data
-        ground = pygame.image.load('Animations_stolen/Animations/graphics/world/ground.png')
+        ground = pygame.image.load('Animations/Animations/graphics/world/ground.png')
         h_tiles, v_tiles = ground.get_width() // TILE_SIZE, ground.get_height() // TILE_SIZE
         # print(h_tiles)
         # print(v_tiles)
 
         self.grid = [[[] for col in range(h_tiles)] for row in range(v_tiles)]
-        for x, y, _ in load_pygame('Animations_stolen/Animations/data/map.tmx').get_layer_by_name('Farmable').tiles():
+        for x, y, _ in load_pygame('Animations/Animations/data/map.tmx').get_layer_by_name('Farmable').tiles():
             self.grid[y][x].append('F')
 
         # created soil grid
