@@ -106,55 +106,110 @@ class Menu:
                 print(curent_item)
 
                 if self.index == self.sword_index:
-                    if self.upgrades['sword'] == 1:
-                        if self.player.money >= UPGRADE_PRICES['sword']:
-                            self.player.money -= UPGRADE_PRICES['sword']
-                            self.upgrades['sword'] += 1
-                            self.upgrde_sound.play()
-                            self.player.sword_lvl +=1
-                    elif self.upgrades['sword'] == 2:
-                        if self.player.money >= UPGRADE_PRICES2['sword']:
-                            self.player.money -= UPGRADE_PRICES2['sword']
-                            self.upgrades['sword'] += 1
-                            self.upgrde_sound.play()
-                            self.player.sword_lvl +=1
-                    elif self.upgrades['sword'] == 3:
-                        if self.player.money >= UPGRADE_PRICES3['sword']:
-                            self.player.money -= UPGRADE_PRICES3['sword']
-                            self.upgrades['sword'] += 1
-                            self.upgrde_sound.play()
-                            self.player.sword_lvl +=1
-                    elif self.upgrades['sword'] == 4:
-                        if self.player.money >= UPGRADE_PRICES4['sword']:
-                            self.player.money -= UPGRADE_PRICES4['sword']
-                            self.upgrades['sword'] += 1
-                            self.upgrde_sound.play()
-                            self.player.sword_lvl +=1
+                    if self.player.sword_durability > 0:
+                        if self.upgrades['sword'] == 1:
+                            if self.player.money >= UPGRADE_PRICES['sword']:
+                                self.player.money -= UPGRADE_PRICES['sword']
+                                self.upgrades['sword'] += 1
+                                self.upgrde_sound.play()
+                                self.player.sword_lvl +=1
+                                self.player.sword_durability = 6
+                        elif self.upgrades['sword'] == 2:
+                            if self.player.money >= UPGRADE_PRICES2['sword']:
+                                self.player.money -= UPGRADE_PRICES2['sword']
+                                self.upgrades['sword'] += 1
+                                self.upgrde_sound.play()
+                                self.player.sword_lvl +=1
+                                self.player.sword_durability = 8
+                        elif self.upgrades['sword'] == 3:
+                            if self.player.money >= UPGRADE_PRICES3['sword']:
+                                self.player.money -= UPGRADE_PRICES3['sword']
+                                self.upgrades['sword'] += 1
+                                self.upgrde_sound.play()
+                                self.player.sword_lvl +=1
+                                self.player.sword_durability = 10
+                        elif self.upgrades['sword'] == 4:
+                            if self.player.money >= UPGRADE_PRICES4['sword']:
+                                self.player.money -= UPGRADE_PRICES4['sword']
+                                self.upgrades['sword'] += 1
+                                self.upgrde_sound.play()
+                                self.player.sword_lvl +=1
+                                self.player.sword_durability = 12
+                    else:
+                        if self.player.money >= 100:
+                            if self.player.sword_lvl == 1:
+                                self.player.sword_durability = 5
+                                self.player.money -= 100
+                                self.upgrde_sound.play()
+                            elif self.player.sword_lvl == 2:
+                                self.player.sword_durability = 6
+                                self.player.money -= 100
+                                self.upgrde_sound.play()
+                            elif self.player.sword_lvl == 3:
+                                self.player.sword_durability = 8
+                                self.player.money -= 100
+                                self.upgrde_sound.play()
+                            elif self.player.sword_lvl == 4:
+                                self.player.sword_durability = 10
+                                self.player.money -= 100
+                                self.upgrde_sound.play()
+                            elif self.player.sword_lvl == 5:
+                                self.player.sword_durability = 12
+                                self.player.money -= 100
+                                self.upgrde_sound.play()
+
                 elif self.index == self.axe_index:
-                    if self.upgrades['axe'] == 1:
-                        if self.player.money >= UPGRADE_PRICES['axe']:
-                            self.player.money -= UPGRADE_PRICES['axe']
-                            self.upgrades['axe'] += 1
-                            self.upgrde_sound.play()
-                            self.player.axe_lvl +=1
-                    elif self.upgrades['axe'] == 2:
-                        if self.player.money >= UPGRADE_PRICES2['axe']:
-                            self.player.money -= UPGRADE_PRICES2['axe']
-                            self.upgrades['axe'] += 1
-                            self.upgrde_sound.play()
-                            self.player.axe_lvl +=1
-                    elif self.upgrades['axe'] == 3:
-                        if self.player.money >= UPGRADE_PRICES3['axe']:
-                            self.player.money -= UPGRADE_PRICES3['axe']
-                            self.upgrades['axe'] += 1
-                            self.upgrde_sound.play()
-                            self.player.axe_lvl +=1
-                    elif self.upgrades['axe'] == 4:
-                        if self.player.money >= UPGRADE_PRICES4['axe']:
-                            self.player.money -= UPGRADE_PRICES4['axe']
-                            self.upgrades['axe'] += 1
-                            self.upgrde_sound.play()
-                            self.player.axe_lvl +=1
+                    if self.player.axe_durability > 0:
+                        if self.upgrades['axe'] == 1:
+                            if self.player.money >= UPGRADE_PRICES['axe']:
+                                self.player.money -= UPGRADE_PRICES['axe']
+                                self.upgrades['axe'] += 1
+                                self.upgrde_sound.play()
+                                self.player.axe_lvl +=1
+                                self.player.axe_durability = 6
+                        elif self.upgrades['axe'] == 2:
+                            if self.player.money >= UPGRADE_PRICES2['axe']:
+                                self.player.money -= UPGRADE_PRICES2['axe']
+                                self.upgrades['axe'] += 1
+                                self.upgrde_sound.play()
+                                self.player.axe_lvl +=1
+                                self.player.axe_durability = 8
+                        elif self.upgrades['axe'] == 3:
+                            if self.player.money >= UPGRADE_PRICES3['axe']:
+                                self.player.money -= UPGRADE_PRICES3['axe']
+                                self.upgrades['axe'] += 1
+                                self.upgrde_sound.play()
+                                self.player.axe_lvl +=1
+                                self.player.axe_durability = 10
+                        elif self.upgrades['axe'] == 4:
+                            if self.player.money >= UPGRADE_PRICES4['axe']:
+                                self.player.money -= UPGRADE_PRICES4['axe']
+                                self.upgrades['axe'] += 1
+                                self.upgrde_sound.play()
+                                self.player.axe_lvl +=1
+                                self.player.axe_durability = 12
+                    else:
+                        if self.player.money >= 100:
+                            if self.player.axe_lvl == 1:
+                                self.player.axe_durability = 5
+                                self.player.money -= 100
+                                self.upgrde_sound.play()
+                            elif self.player.axe_lvl == 2:
+                                self.player.axe_durability = 6
+                                self.player.money -= 100
+                                self.upgrde_sound.play()
+                            elif self.player.axe_lvl == 3:
+                                self.player.axe_durability = 8
+                                self.player.money -= 100
+                                self.upgrde_sound.play()
+                            elif self.player.axe_lvl == 4:
+                                self.player.axe_durability = 10
+                                self.player.money -= 100
+                                self.upgrde_sound.play()
+                            elif self.player.axe_lvl == 5:
+                                self.player.axe_durability = 12
+                                self.player.money -= 100
+                                self.upgrde_sound.play()
                 else:
 
                         #SELL
@@ -208,14 +263,18 @@ class Menu:
                 else :
                     pos_rect = self.axe_repair.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
                     self.display_surface.blit(self.axe_repair,pos_rect)
+
             elif self.index == self.sword_index:
                 if self.player.sword_durability > 0:
                     if self.upgrades['sword'] == 5:
                         pos_rect = self.sword_full_text.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
                         self.display_surface.blit(self.sword_full_text,pos_rect)
                     else:
-                        pos_rect = self.sword_repair.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
-                        self.display_surface.blit(self.sword_repair,pos_rect)
+                        pos_rect = self.sword_text.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
+                        self.display_surface.blit(self.sword_text,pos_rect)
+                else:
+                    pos_rect = self.sword_repair.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
+                    self.display_surface.blit(self.sword_repair,pos_rect)
             else:
 
 
