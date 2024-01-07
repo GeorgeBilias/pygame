@@ -186,6 +186,22 @@ class Level:
         for obj in tmx_data.get_layer_by_name('Cows'):
             Cow((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites], obj.name,
                 self.feed_player)
+            # chicken
+        for obj in tmx_data.get_layer_by_name('Chickens'):
+            Chicken((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites],
+                    obj.name,
+                    self.feed_player)
+
+            # pigs
+        for obj in tmx_data.get_layer_by_name('Pigs'):
+            Pig((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites], obj.name,
+                self.feed_player)
+
+            # buffallos
+        for obj in tmx_data.get_layer_by_name('Buffallos'):
+            Buffallo((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites],
+            obj.name,
+            self.feed_player)
 
     def reset(self):
 
