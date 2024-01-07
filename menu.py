@@ -77,6 +77,9 @@ class Menu:
         self.axe_repair = self.font.render('repair',False,'Black')
         self.sword_repair = self.font.render('repair', False, 'Black')
 
+        self.buyseeds_text = self.font.render('buy seeds', False, 'Black')
+        self.sellseeds_text = self.font.render('sell seeds', False, 'Black')
+
 
 
 
@@ -282,9 +285,12 @@ class Menu:
                     pos_rect = self.sell_text.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
                     self.display_surface.blit(self.sell_text,pos_rect)
                 else: #buy
-                    pos_rect = self.buy_text.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
-
-                    self.display_surface.blit(self.buy_text,pos_rect)
+                    if self.index == 5 or self.index == 4:
+                        pos_rect = self.buyseeds_text.get_rect(midleft=(self.main_rect.left + 150, bg_rect.centery))
+                        self.display_surface.blit(self.buyseeds_text, pos_rect)
+                    else:
+                        pos_rect = self.buy_text.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
+                        self.display_surface.blit(self.buy_text,pos_rect)
 
 
     def update(self):
