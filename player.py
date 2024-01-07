@@ -194,12 +194,12 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_w]:  # pressing the w button to go up
                 self.direction.y = -1  # set the direction to up
                 self.status = 'up'
-                self.remove_hunger(0.01)
+                self.remove_hunger(0.009)
 
             elif keys[pygame.K_s]:  # pressing the s button to go down
                 self.direction.y = 1  # set the direction to down
                 self.status = 'down'
-                self.remove_hunger(0.01)
+                self.remove_hunger(0.009)
 
             else:
                 self.direction.y = 0  # user stopped pressing key therefore player doesn't move anymore vertically
@@ -208,19 +208,19 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_a]:  # pressing the "a" button to go left
                 self.direction.x = -1  # setting direction to go left
                 self.status = 'left'
-                self.remove_hunger(0.01)
+                self.remove_hunger(0.009)
 
             elif keys[pygame.K_d]:  # pressing the d button to go right
                 self.direction.x = 1  # setting direction to go right
                 self.status = 'right'
-                self.remove_hunger(0.01)
+                self.remove_hunger(0.009)
 
             else:
                 self.direction.x = 0  # user stopped pressing key therefore player doesn't move anymore horizontal
 
             if keys[pygame.K_LSHIFT] and (keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[
                 pygame.K_d]):
-                self.remove_hunger(0.1)
+                self.remove_hunger(0.02)
 
             # sprinting
             if keys[pygame.K_LSHIFT] and self.hunger > 20:
@@ -249,7 +249,7 @@ class Player(pygame.sprite.Sprite):
                 self.timers['tool use'].activate()  # activate the use of tool
                 self.direction = pygame.math.Vector2()  # stop moving
                 self.frame_index = 0  # fix frame issue by resetting the index
-                self.remove_hunger(0.3)
+                self.remove_hunger(0.02)
             # seed use
             if keys[pygame.K_LCTRL]:
                 # setting timer for tool use
