@@ -1,3 +1,4 @@
+import os
 import sys
 
 import pygame
@@ -12,9 +13,26 @@ class Player(pygame.sprite.Sprite):
                  buffallo_sprites, interaction, soil_layer, toggle_shop):
         super().__init__(group)
         pygame.mouse.set_visible(False)
+        if not os.path.exists('save.txt'):
+            # If not, create the file and write data
+            with open('save.txt', 'w') as file:
+                file.write("1\n0")
+            print("File created: save.txt")
+        else:
+            # If the file already exists, do nothing
+            print("File already exists: save.txt")
+
+        with open('save.txt', 'r') as file:
+            # Read the first line and convert it to an integer
+            number1 = int(file.readline().strip())
+
+            # Read the second line and convert it to an integer
+            number2 = int(file.readline().strip())
+
+
         self.fatigue = 0
-        self.level = 1
-        self.xp = 0
+        self.level = number1
+        self.xp = number2
         self.xp_needed = 100
         self.hunger = 100  # max is 100
         self.health = 100  # max is 100
@@ -313,6 +331,18 @@ class Player(pygame.sprite.Sprite):
                             elif event.type == pygame.MOUSEBUTTONDOWN:
                                 x, y = event.pos
                                 if exit_button_rect.collidepoint(x, y):
+                                    with open("save.txt", 'w'):
+                                        pass  # The 'pass' statement does nothing, but it's required to keep the with block syntactically correct
+
+                                    print(f"Content of '{"save.txt"}' has been deleted.")
+                                    with open('save.txt', 'w') as file:
+                                        # Write the first number to the file
+                                        number1 = self.level  # Replace this with the first number
+                                        file.write(str(number1) + '\n')  # Adding '\n' to move to the next line
+
+                                        # Write the second number to the file
+                                        number2 = self.xp  # Replace this with the second number
+                                        file.write(str(number2))
                                     pygame.quit()
                                     sys.exit()
                         if not keys[pygame.K_ESCAPE]:
@@ -436,7 +466,7 @@ class Player(pygame.sprite.Sprite):
         screen = pygame.display.get_surface()
         # insert background for level
         level_background = pygame.image.load("Animations/Animations/background_level.png")
-        new_width = 220  # Set the desired width
+        new_width = 240  # Set the desired width
         new_height = 30  # Set the desired height
         level_background = pygame.transform.scale(level_background, (new_width, new_height))
 
