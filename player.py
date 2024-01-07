@@ -16,24 +16,24 @@ class Player(pygame.sprite.Sprite):
         if not os.path.exists('save.txt'):
             # If not, create the file and write data
             with open('save.txt', 'w') as file:
-                file.write("1\n0")
+                file.write("1\n0\n100\n1000")
             print("File created: save.txt")
         else:
             # If the file already exists, do nothing
             print("File already exists: save.txt")
 
         with open('save.txt', 'r') as file:
-            # Read the first line and convert it to an integer
-            number1 = int(file.readline().strip())
 
-            # Read the second line and convert it to an integer
-            number2 = int(file.readline().strip())
+            level = int(file.readline().strip())
+            xp = int(file.readline().strip())
+            xp_needed = int(file.readline().strip())
+            money = int(file.readline().strip())
 
 
         self.fatigue = 0
-        self.level = number1
-        self.xp = number2
-        self.xp_needed = 100
+        self.level = level
+        self.xp = xp
+        self.xp_needed = xp_needed
         self.hunger = 100  # max is 100
         self.health = 100  # max is 100
         self.tired = 0  # not tired
@@ -96,7 +96,7 @@ class Player(pygame.sprite.Sprite):
         self.sword_lvl = 1
         self.axe_lvl = 1
 
-        self.money = 1000
+        self.money = money
 
         # interaction
         self.tree_sprites = tree_sprites
@@ -339,10 +339,13 @@ class Player(pygame.sprite.Sprite):
                                         # Write the first number to the file
                                         number1 = self.level  # Replace this with the first number
                                         file.write(str(number1) + '\n')  # Adding '\n' to move to the next line
-
                                         # Write the second number to the file
                                         number2 = self.xp  # Replace this with the second number
-                                        file.write(str(number2))
+                                        file.write(str(number2) + '\n')
+                                        number3 = self.xp_needed
+                                        file.write(str(number3) + '\n')
+                                        number4 = self.money
+                                        file.write(str(number4) + '\n')
                                     pygame.quit()
                                     sys.exit()
                         if not keys[pygame.K_ESCAPE]:
