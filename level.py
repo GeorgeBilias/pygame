@@ -135,22 +135,34 @@ class Level:
     def feed_player(self, animal):
         if animal == "Cow":
             self.player.add_hunger_cow()
-            self.player.health += 5
+            if self.player.health + 5 > 100:
+                self.player.health = 100
+            else:
+                self.player.health += 5
             # fed player
             print(self.player.hunger)
         if animal == "Chicken":
             self.player.add_hunger_chicken()
-            self.player.health += 5
+            if self.player.health + 5 > 100:
+                self.player.health = 100
+            else:
+                self.player.health += 5
             # fed player
             print(self.player.hunger)
         if animal == "Pig":
             self.player.add_hunger_pig()
-            self.player.health += 5
+            if self.player.health + 5 > 100:
+                self.player.health = 100
+            else:
+                self.player.health += 5
             # fed player
             print(self.player.hunger)
         if animal == "Buffallo":
             self.player.add_hunger_buffallo()
-            self.player.health += 10
+            if self.player.health + 10 > 100:
+                self.player.health = 100
+            else:
+                self.player.health += 10
             # fed player
             print(self.player.hunger)
 
