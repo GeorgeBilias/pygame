@@ -25,8 +25,6 @@ class Game:
 
             dt = self.clock.tick(60) / 1000  # set frames
             self.level.run(dt)  # run the level
-            # Update game logic and draw on the screen
-            # (Game logic and drawing code would be added here in a complete game)
 
             pygame.display.update()  # Update the display
 
