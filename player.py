@@ -339,6 +339,8 @@ class Player(pygame.sprite.Sprite):
                     self.status = self.status + str(self.sword_lvl)
                 if self.axe_lvl > 1 and self.selected_tool == 'axe':
                     self.status = self.status + str(self.axe_lvl)
+            elif (self.selected_tool == 'sword' and self.sword_durability == 0) or (self.selected_tool == 'axe' and self.axe_durability == 0):
+                    print("Tool is broken")
             else:
                 self.status = self.status.split('_')[
                                   0] + '_' + self.selected_tool  # set the right direction and tool for animation
