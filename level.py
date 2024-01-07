@@ -129,10 +129,12 @@ class Level:
                 groups=self.all_sprites, z=LAYERS['ground'])  # adding ground
 
     def player_add(self, item):  # add item to inventory after some action
+        self.player.xp += 10
         self.player.item_inventory[item] += 1
         self.success.play()
 
     def feed_player(self, animal):
+        self.player.xp += 10
         if animal == "Cow":
             self.player.add_hunger_cow()
             if self.player.health + 5 > 100:

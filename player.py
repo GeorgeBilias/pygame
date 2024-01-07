@@ -13,6 +13,9 @@ class Player(pygame.sprite.Sprite):
         super().__init__(group)
         pygame.mouse.set_visible(False)
         self.fatigue = 0
+        self.level = 1
+        self.xp = 0
+        self.xp_needed = 100
         self.hunger = 100  # max is 100
         self.health = 100  # max is 100
         self.tired = 0  # not tired
@@ -429,6 +432,25 @@ class Player(pygame.sprite.Sprite):
             screen.blit(steak_surface, (x, y))
             x -= steak_size + spacing
 
+    def draw_level_indicator(self, level):
+        screen = pygame.display.get_surface()
+        # insert background for level
+        level_background = pygame.image.load("Animations/Animations/background_level.png")
+        new_width = 220  # Set the desired width
+        new_height = 30  # Set the desired height
+        level_background = pygame.transform.scale(level_background, (new_width, new_height))
+
+        level_background_rect = level_background.get_rect(topleft=(0, 10))  # Adjust the values (x, y) accordingly
+        screen.blit(level_background, level_background_rect)
+
+        #insert the level string
+        level_string = "Level: " + str(level) + " XP: " + str(self.xp) + "/" + str(self.xp_needed)
+        level_font = pygame.font.Font('font/LycheeSoda.ttf', 30)
+        level_text = level_font.render(level_string, True, (255, 255, 255))
+        level_rect = level_text.get_rect(topleft=(10, 10))  # Adjust the values (x, y) accordingly
+        screen.blit(level_text, level_rect)
+
+
     def draw_health_indicator(self, health_level):
         x, y = SCREEN_WIDTH - 100, 10  # Top right corner
         heart_size = 0.01  # Size of each steak icon
@@ -541,6 +563,16 @@ class Player(pygame.sprite.Sprite):
         if self.health == 0:
             print("Game over")
             self.game_over()
+
+        self.draw_level_indicator(self.level)
+
+        if self.xp >= self.xp_needed:
+            self.level += 1
+            self.xp = 0
+            self.xp_needed += 10
+            print("Level up!")
+            level_up_sound = pygame.mixer.Sound("Animations/Animations/audio/level_up.mp3")
+            level_up_sound.play()
 
         self.draw_hunger_indicator(self.hunger)
         self.draw_health_indicator(self.health)
