@@ -49,6 +49,8 @@ class Player(pygame.sprite.Sprite):
 
         # tools
         self.tools = ['hoe', 'axe', 'sword', 'water']  # set the tools available
+        self.sword_durability = 5
+        self.axe_durability = 5
         self.tool_index = 0  # set default tool
         self.selected_tool = self.tools[self.tool_index]  # set selected tool
 
@@ -104,29 +106,34 @@ class Player(pygame.sprite.Sprite):
 
         if self.selected_tool == 'axe':
             for tree in self.tree_sprites.sprites():
-                if tree.rect.collidepoint(self.target_pos):  # if the axe is colliding with tree
+                if tree.rect.collidepoint(self.target_pos) and self.axe_durability > 0:  # if the axe is colliding with tree
                     if isinstance(tree, Tree):  # replace 'Tree' with the correct class name
                         tree.damage(self.axe_lvl)
+                        self.axe_durability -= 1
                     else:
                         print("The object is not a Tree instance")
         if (self.selected_tool == 'sword' or self.selected_tool == 'sword1' or self.selected_tool == 'sword2' or
                 self.selected_tool == 'sword3' or self.selected_tool == 'sword4' or self.selected_tool == 'sword5'):
 
             for cow in self.cow_sprites.sprites():
-                if cow.rect.collidepoint(self.target_pos):
+                if cow.rect.collidepoint(self.target_pos) and self.sword_durability > 0:
                     cow.damage(self.sword_lvl)
+                    self.sword_durability -= 1
 
             for chicken in self.chicken_sprites.sprites():
-                if chicken.rect.collidepoint(self.target_pos):
+                if chicken.rect.collidepoint(self.target_pos) and self.sword_durability > 0:
                     chicken.damage(self.sword_lvl)
+                    self.sword_durability -= 1
 
             for pig in self.pig_sprites.sprites():
-                if pig.rect.collidepoint(self.target_pos):
+                if pig.rect.collidepoint(self.target_pos) and self.sword_durability > 0:
                     pig.damage(self.sword_lvl)
+                    self.sword_durability -= 1
 
             for buffallo in self.buffallo_sprites.sprites():
-                if buffallo.rect.collidepoint(self.target_pos):
+                if buffallo.rect.collidepoint(self.target_pos) and self.sword_durability > 0:
                     buffallo.damage(self.sword_lvl)
+                    self.sword_durability -= 1
 
         if self.selected_tool == 'water':
             self.soil_layer.water(self.target_pos)
@@ -323,13 +330,16 @@ class Player(pygame.sprite.Sprite):
 
         # If tool use is active
         if self.timers['tool use'].active:
-            self.status = self.status.split('_')[
-                              0] + '_' + self.selected_tool  # set the right direction and tool for animation
-            if self.sword_lvl > 1 and self.selected_tool == 'sword':
-                self.status = self.status + str(self.sword_lvl)
-            if self.axe_lvl > 1 and self.selected_tool == 'axe':
-                self.status = self.status + str(self.axe_lvl)
-            # TODO maybe add animation for seed planting
+
+            if (self.selected_tool == 'sword' and self.sword_durability > 0 ) or (self.selected_tool == 'axe' and self.axe_durability > 0):
+
+                self.status = self.status.split('_')[
+                                  0] + '_' + self.selected_tool  # set the right direction and tool for animation
+                if self.sword_lvl > 1 and self.selected_tool == 'sword':
+                    self.status = self.status + str(self.sword_lvl)
+                if self.axe_lvl > 1 and self.selected_tool == 'axe':
+                    self.status = self.status + str(self.axe_lvl)
+                # TODO maybe add animation for seed planting
 
     def update_timers(self):  # update timers continuously
         for timer in self.timers.values():

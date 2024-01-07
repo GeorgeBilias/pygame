@@ -74,6 +74,10 @@ class Menu:
         self.axe_full_text = self.font.render('max',False,'Black')
         self.sword_full_text = self.font.render('max',False,'Black')
 
+        self.axe_repair = self.font.render('repair',False,'Black')
+        self.sword_repair = self.font.render('repair', False, 'Black')
+
+
 
 
     def input(self):
@@ -194,19 +198,24 @@ class Menu:
             pygame.draw.rect(self.display_surface, 'black',bg_rect,4,4)
 
             if self.index == self.axe_index:
-                if self.upgrades['axe'] == 5:
-                    pos_rect = self.axe_full_text.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
-                    self.display_surface.blit(self.axe_full_text,pos_rect)
-                else:
-                    pos_rect = self.axe_text.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
-                    self.display_surface.blit(self.axe_text,pos_rect)
+                if self.player.axe_durability > 0 :
+                    if self.upgrades['axe'] == 5:
+                        pos_rect = self.axe_full_text.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
+                        self.display_surface.blit(self.axe_full_text,pos_rect)
+                    else:
+                        pos_rect = self.axe_text.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
+                        self.display_surface.blit(self.axe_text,pos_rect)
+                else :
+                    pos_rect = self.axe_repair.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
+                    self.display_surface.blit(self.axe_repair,pos_rect)
             elif self.index == self.sword_index:
-                if self.upgrades['sword'] == 5:
-                    pos_rect = self.sword_full_text.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
-                    self.display_surface.blit(self.sword_full_text,pos_rect)
-                else:
-                    pos_rect = self.sword_text.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
-                    self.display_surface.blit(self.sword_text,pos_rect)
+                if self.player.sword_durability > 0:
+                    if self.upgrades['sword'] == 5:
+                        pos_rect = self.sword_full_text.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
+                        self.display_surface.blit(self.sword_full_text,pos_rect)
+                    else:
+                        pos_rect = self.sword_repair.get_rect(midleft = (self.main_rect.left + 150,bg_rect.centery))
+                        self.display_surface.blit(self.sword_repair,pos_rect)
             else:
 
 
