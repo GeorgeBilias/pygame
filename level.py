@@ -83,7 +83,7 @@ class Level:
 
         for obj in tmx_data.get_layer_by_name('Trees'):
             Tree((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.tree_sprites], obj.name,
-                 self.player_add)
+                 self.player_add,self.all_sprites)
 
         # cows
         for obj in tmx_data.get_layer_by_name('Cows'):

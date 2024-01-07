@@ -2,6 +2,7 @@ import sys
 
 import pygame
 from settings import *
+from sprites import Tree
 from support import *
 from timer import Timer
 
@@ -100,7 +101,10 @@ class Player(pygame.sprite.Sprite):
         if self.selected_tool == 'axe':
             for tree in self.tree_sprites.sprites():
                 if tree.rect.collidepoint(self.target_pos):  # if the axe is colliding with tree
-                    tree.damage(self.axe_lvl)
+                    if isinstance(tree, Tree):  # replace 'Tree' with the correct class name
+                        tree.damage(self.axe_lvl)
+                    else:
+                        print("The object is not a Tree instance")
         if (self.selected_tool == 'sword' or self.selected_tool == 'sword1' or self.selected_tool == 'sword2' or
                 self.selected_tool == 'sword3' or self.selected_tool == 'sword4' or self.selected_tool == 'sword5'):
 

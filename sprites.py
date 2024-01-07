@@ -68,8 +68,10 @@ class Particle(Generic):  # create particle effect
 
 
 class Tree(Generic):
-    def __init__(self, pos, surf, groups, name, player_add):
+    def __init__(self, pos, surf, groups, name, player_add,all_sprites):
         super().__init__(pos, surf, groups)
+
+        self.all_sprites = all_sprites
 
         # tree attributes
         self.health = 5
@@ -99,7 +101,7 @@ class Tree(Generic):
             random_apple = choice(self.apple_sprites.sprites())
 
             # display particle when apple is destroyed
-            Particle(random_apple.rect.topleft, random_apple.image, self.groups()[0], LAYERS['fruit'])
+            Particle(random_apple.rect.topleft, random_apple.image, self.all_sprites, LAYERS['fruit'])
 
             self.player_add('apple')  # give apple to player after destroying tree
 
@@ -107,7 +109,7 @@ class Tree(Generic):
 
     def check_death(self):
         if self.health <= 0:
-            Particle(self.rect.topleft, self.image, self.groups()[0], LAYERS['fruit'], 500)
+            Particle(self.rect.topleft, self.image, self.all_sprites, LAYERS['fruit'], 500)
             self.image = self.stump_surf
             self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
             self.hitbox = self.rect.copy().inflate(-10, -self.rect.height * 0.6)
@@ -120,12 +122,15 @@ class Tree(Generic):
 
     def create_fruit(self):
         for pos in self.apple_pos:  # spawn apple ins random locations
-            if randint(0, 10) < 5:
+            if randint(1, 10) < 5:
+                print(randint(1, 10))
                 print("creating apples")
                 # actual pos of apple from the borders
+
                 x = pos[0] + self.rect.left
                 y = pos[1] + self.rect.top
-                Generic((x, y), self.apples_surf, [self.apple_sprites, self.groups()[0]], LAYERS['fruit'])
+                print(x, y)
+                Generic((x, y), self.apples_surf, [self.apple_sprites, self.all_sprites], LAYERS['fruit'])
 
 
 class Cow(Generic):
