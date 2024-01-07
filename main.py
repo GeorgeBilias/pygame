@@ -5,11 +5,13 @@ import sys
 from level import Level
 from settings import *
 
+
 # main class
 class Game:
     def __init__(self):
         pygame.init()  # Initialize the Pygame library
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)  # Set up the game window
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),
+                                              pygame.FULLSCREEN)  # Set up the game window
         pygame.display.set_caption("Game")
         self.clock = pygame.time.Clock()  # Create a clock object to control the frame rate
         self.level = Level()  # Initialize the level object
@@ -27,6 +29,7 @@ class Game:
             # (Game logic and drawing code would be added here in a complete game)
 
             pygame.display.update()  # Update the display
+
 
 # Check if the script is being run as the main program
 if __name__ == "__main__":
@@ -70,11 +73,10 @@ if __name__ == "__main__":
         screen.blit(pygame.image.load("Animations_stolen/Animations/background.png"), (0, 0))
 
         # Display the title
-        font = pygame.font.Font('font/LycheeSoda.ttf', 120)
 
-        title = font.render("PixelTerra", True, (109,109,109))
-        title_rect = title.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 100))
-        screen.blit(title, title_rect)
+        title = pygame.image.load("Animations_stolen/Animations/title.png")
+        title = pygame.transform.scale(title, (SCREEN_WIDTH, SCREEN_HEIGHT-300))
+        screen.blit(title, (0, 0))
 
         # Display the buttons
         screen.blit(start_button_image, start_button_rect)
