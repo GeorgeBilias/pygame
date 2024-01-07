@@ -8,11 +8,12 @@ from timer import Timer
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites, cow_sprites,chicken_sprites,pig_sprites,buffallo_sprites, interaction, soil_layer, toggle_shop):
+    def __init__(self, pos, group, collision_sprites, tree_sprites, cow_sprites, chicken_sprites, pig_sprites,
+                 buffallo_sprites, interaction, soil_layer, toggle_shop):
         super().__init__(group)
         pygame.mouse.set_visible(False)
         self.fatigue = 0
-        self.hunger = 100 # max is 100
+        self.hunger = 100  # max is 100
         self.health = 100  # max is 100
         self.tired = 0  # not tired
         self.animations = {}  # create a directory for animations
@@ -77,6 +78,9 @@ class Player(pygame.sprite.Sprite):
         # interaction
         self.tree_sprites = tree_sprites
         self.cow_sprites = cow_sprites
+        self.chicken_sprites = chicken_sprites
+        self.pig_sprites = pig_sprites
+        self.buffallo_sprites = buffallo_sprites
         self.interaction = interaction
         self.sleep = False
         self.soil_layer = soil_layer
@@ -112,19 +116,17 @@ class Player(pygame.sprite.Sprite):
                 if cow.rect.collidepoint(self.target_pos):
                     cow.damage(self.sword_lvl)
 
-            for chicken in self.cow_sprites.sprites():
+            for chicken in self.chicken_sprites.sprites():
                 if chicken.rect.collidepoint(self.target_pos):
                     chicken.damage(self.sword_lvl)
 
-            for pig in self.cow_sprites.sprites():
+            for pig in self.pig_sprites.sprites():
                 if pig.rect.collidepoint(self.target_pos):
                     pig.damage(self.sword_lvl)
 
-            for buffallo in self.cow_sprites.sprites():
+            for buffallo in self.buffallo_sprites.sprites():
                 if buffallo.rect.collidepoint(self.target_pos):
                     buffallo.damage(self.sword_lvl)
-
-            
 
         if self.selected_tool == 'water':
             self.soil_layer.water(self.target_pos)
@@ -310,7 +312,6 @@ class Player(pygame.sprite.Sprite):
                     # Remove the quit button
                     pygame.display.get_surface().fill((0, 0, 0))
                     pygame.display.flip()
-
 
     def get_status(self):
         # if player is not moving

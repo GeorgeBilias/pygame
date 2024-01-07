@@ -83,27 +83,29 @@ class Level:
 
         for obj in tmx_data.get_layer_by_name('Trees'):
             Tree((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.tree_sprites], obj.name,
-                 self.player_add,self.all_sprites)
+                 self.player_add, self.all_sprites)
 
         # cows
         for obj in tmx_data.get_layer_by_name('Cows'):
             Cow((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites], obj.name,
                 self.feed_player)
-            
+
         # chicken
         for obj in tmx_data.get_layer_by_name('Chickens'):
-            Chicken((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites], obj.name,
-                self.feed_player)
-            
+            Chicken((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.chicken_sprites],
+                    obj.name,
+                    self.feed_player)
+
         # pigs
         for obj in tmx_data.get_layer_by_name('Pigs'):
-            Pig((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites], obj.name,
+            Pig((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.pig_sprites], obj.name,
                 self.feed_player)
-            
+
         # buffallos
         for obj in tmx_data.get_layer_by_name('Buffallos'):
-            Buffallo((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites], obj.name,
-                self.feed_player)
+            Buffallo((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.buffallo_sprites],
+                     obj.name,
+                     self.feed_player)
 
         # collision tiles
         for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():  # USING SET COLLISIONS FOR MAP MADE IN TILED
@@ -113,7 +115,7 @@ class Level:
         for obj in tmx_data.get_layer_by_name('Player'):
             if obj.name == 'Start':
                 self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites, self.tree_sprites,
-                                     self.cow_sprites,self.chicken_sprites, self.pig_sprites,self.buffallo_sprites,
+                                     self.cow_sprites, self.chicken_sprites, self.pig_sprites, self.buffallo_sprites,
                                      self.interaction_sprites, self.soil_layer, self.toggle_shop)  # initialising player
 
             if obj.name == 'Bed':  # creating area to sleep
@@ -192,20 +194,20 @@ class Level:
                 self.feed_player)
             # chicken
         for obj in tmx_data.get_layer_by_name('Chickens'):
-            Chicken((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites],
+            Chicken((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.chicken_sprites],
                     obj.name,
                     self.feed_player)
 
             # pigs
         for obj in tmx_data.get_layer_by_name('Pigs'):
-            Pig((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites], obj.name,
+            Pig((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.pig_sprites], obj.name,
                 self.feed_player)
 
             # buffallos
         for obj in tmx_data.get_layer_by_name('Buffallos'):
-            Buffallo((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.cow_sprites],
-            obj.name,
-            self.feed_player)
+            Buffallo((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.buffallo_sprites],
+                     obj.name,
+                     self.feed_player)
 
     def reset(self):
 
