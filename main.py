@@ -34,7 +34,6 @@ class Game:
 # Check if the script is being run as the main program
 if __name__ == "__main__":
     pygame.init()
-
     # Set up the game window
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
     pygame.display.set_caption("Start Menu")
@@ -91,6 +90,12 @@ if __name__ == "__main__":
         title = pygame.image.load("Animations_stolen/Animations/title.png")
         title = pygame.transform.scale(title, (SCREEN_WIDTH, SCREEN_HEIGHT-300))
         screen.blit(title, (0, 0))
+
+        # display the keyboard
+        keyboard = pygame.image.load("Animations_stolen/Animations/keyboard.png")
+        keyboard = pygame.transform.scale(keyboard, (250, 90))
+        # at bottom right
+        screen.blit(keyboard, (SCREEN_WIDTH-250, SCREEN_HEIGHT-90))
 
         # Display the buttons
         screen.blit(start_button_image, start_button_rect)

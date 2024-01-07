@@ -9,7 +9,7 @@ from timer import Timer
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group, collision_sprites, tree_sprites, cow_sprites,chicken_sprites,pig_sprites,buffallo_sprites, interaction, soil_layer, toggle_shop):
         super().__init__(group)
-
+        pygame.mouse.set_visible(False)
         self.fatigue = 0
         self.hunger = 100 # max is 100
         self.health = 100  # max is 100
@@ -274,6 +274,7 @@ class Player(pygame.sprite.Sprite):
                         self.toggle_shop()
 
             if keys[pygame.K_ESCAPE]:
+                pygame.mouse.set_visible(True)
                 if not self.quit_button_displayed:
                     # Display a quit button
                     new_button_width, new_button_height = 200, 50
