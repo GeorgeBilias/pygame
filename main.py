@@ -52,10 +52,20 @@ if __name__ == "__main__":
     exit_button_image = pygame.transform.scale(exit_button_image, (new_button_width, new_button_height))
     exit_button_rect = exit_button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 170))
 
+    # Load your MP3 file
+    pygame.mixer.music.load("Animations_stolen/Animations/audio/main_menu.mp3")
+
+    # Set the end event to restart the music when it finishes
+    pygame.mixer.music.set_endevent(pygame.USEREVENT)
+
+    # Start playing the music in an infinite loop
+    pygame.mixer.music.play(loops=-1)  # The loops parameter set to -1 means it will loop indefinitely
+
     # Main menu loop
     start_button_clicked = False
     exit_button_clicked = False
     while not start_button_clicked and not exit_button_clicked:
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -63,8 +73,12 @@ if __name__ == "__main__":
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
                 if start_button_rect.collidepoint(x, y):
+                    # stop the main menu sound
+                    pygame.mixer.music.stop()
                     start_button_clicked = True
                 elif exit_button_rect.collidepoint(x, y):
+                    # stop the main menu sound
+                    pygame.mixer.music.stop()
                     exit_button_clicked = True
                     pygame.quit()
                     sys.exit()

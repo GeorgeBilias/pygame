@@ -162,7 +162,7 @@ class Menu:
                         #BUY
                         seed_price = PURCHASE_PRICES[curent_item]
                         if self.player.money >= seed_price:
-                            self.player.item_inventory[curent_item] +=1
+                            self.player.seed_inventory[curent_item] +=1
                             self.player.money -= PURCHASE_PRICES[curent_item]
 
         # clamp values
